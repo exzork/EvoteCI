@@ -1,0 +1,39 @@
+version: "3"
+services:
+  mysql_evote:
+    container_name: mysql_evote
+    image: mysql:latest
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./evote.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: evoteci
+      MYSQL_DATABASE: evoteci
+    ports:
+      - "3306:3306"
+  web_evote:
+    container_name: web_evote
+    build:
+      context: ./evote-web
+      dockerfile: ../Dockerfile
+    links:
+      - mysql_evote
+    depends_on:
+      - mysql_evote
+    volumes:
+      - ./evote-web:/var/www/:rw
+      - ./evote-web/public/:/var/www/html:ro
+      - ./evote-web/writable:/var/www/writable:rw
+      - /var/www/vendor
+    environment:
+      VIRTUAL_HOST: evoteci.exzork.me
+      LETSENCRYPT_HOST: evoteci.exzork.me
+      LETSENCRYPT_EMAIL: muhammadeko.if@gmail.com
+
+volumes:
+  db_data:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
