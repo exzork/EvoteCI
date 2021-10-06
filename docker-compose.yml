@@ -3,6 +3,7 @@ services:
   mysql_evote:
     container_name: mysql_evote
     image: mysql:latest
+    restart: always
     volumes:
       - db_data:/var/lib/mysql
       - ./evote.sql:/docker-entrypoint-initdb.d/dump.sql
@@ -16,6 +17,7 @@ services:
     build:
       context: ./evote-web
       dockerfile: ../Dockerfile
+    restart: always
     links:
       - mysql_evote
     depends_on:
