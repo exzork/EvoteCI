@@ -218,7 +218,8 @@
                                         $(".loader").removeClass('hidden');
                                         $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {
                                             $(".loader").addClass('hidden');
-                                            $("#main-content").html(data);$(".table-datatable").DataTable({
+                                            $("#main-content").html(data);
+                                            $(".table-datatable").DataTable({
                                                 "autoWidth": false,
                                                 "scrollX": true
                                             });
@@ -389,6 +390,7 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    console.log(data);
                                     $(".loader").addClass('hidden');
                                     $(".modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
@@ -402,6 +404,10 @@
                                         });
                                     });
                                 },
+                                error: function(data) {
+                                    $(".loader").addClass('hidden');
+                                    alert_change('error', 'Terjadi kesalahan, coba lagi!');
+                                }
                             });
                         }
 

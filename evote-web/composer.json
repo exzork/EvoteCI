@@ -4,6 +4,11 @@
 	"description": "The CodeIgniter framework v4",
 	"homepage": "https://codeigniter.com",
 	"license": "MIT",
+	"config": {
+
+		"platform-check": false
+	},
+	
 	"require": {
 		"php": ">=7.2",
 		"ext-curl": "*",

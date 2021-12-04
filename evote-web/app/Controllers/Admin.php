@@ -26,7 +26,7 @@ class Admin extends Controller
         helper(['form', 'url']);
         echo view('admin/Masuk');
     }
-    
+
     public function masuk()
     {
         $session = session();
@@ -35,7 +35,7 @@ class Admin extends Controller
         $password = $this->request->getVar('password');
         //var_dump($this->request);
         $data = $admin->where('username_admin', $username)->first();
-        $admin->set(['password_admin'=>password_hash(getenv("DEFAULT_ADMIN_PASSWORD"),PASSWORD_DEFAULT)])->where('username_admin',$username)->update();
+        $admin->set(['password_admin' => password_hash(getenv("DEFAULT_ADMIN_PASSWORD"), PASSWORD_DEFAULT)])->where('username_admin', $username)->update();
 
         if ($data) {
             $pass = $data['password_admin'];
@@ -62,7 +62,7 @@ class Admin extends Controller
     public function config()
     {
         $sesion = session();
-        helper(['form','url']);
+        helper(['form', 'url']);
         echo view('admin/PanelTop', array('judul' => 'Event'));
         $this->get_config();
         echo view('admin/PanelBot');
@@ -73,9 +73,9 @@ class Admin extends Controller
         $config = new ConfigModel();
         $dataConfig = $config->first();
         $data = array(
-            'config'=>$dataConfig
+            'config' => $dataConfig
         );
-        echo view('admin/Config',$data);
+        echo view('admin/Config', $data);
     }
 
     public function event()
@@ -118,11 +118,11 @@ class Admin extends Controller
         $builder->join('admin', 'event.admin=admin.kode_admin');
         $query = $builder->get();
         $event_data = $query->getResult();
-        foreach ($event_data as $key => $value){
-            $dp = $db->table('DP_'.$value->kode_event)->selectCount('npm','jumlah')->get()->getResultArray();
+        foreach ($event_data as $key => $value) {
+            $dp = $db->table('DP_' . $value->kode_event)->selectCount('npm', 'jumlah')->get()->getResultArray();
             $event_data[$key]->dp_count = $dp[0]['jumlah'];
             $rekap = new RekapModel();
-            $rek = $rekap->selectCount('kode_rekap','jumlah')->where('event',$value->kode_event)->first();
+            $rek = $rekap->selectCount('kode_rekap', 'jumlah')->where('event', $value->kode_event)->first();
             $event_data[$key]->rek_count = $rek['jumlah'];
         }
         $data = array(
@@ -138,7 +138,7 @@ class Admin extends Controller
         $db = \Config\Database::connect();
         $builder = $db->table("event");
         $event = new EventModel();
-        $msg=[];
+        $msg = [];
         $last_event = $builder->orderBy("kode_event", "DESC")->limit(1)->get()->getResultArray();
         if (count($last_event) == 0) {
             $new_kode_event = "EVE0001";
@@ -487,7 +487,7 @@ class Admin extends Controller
         $email->setReplyTo($main_email, "Admin Evote IF");
         $email->setSubject('Temporary Password');
         $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
-        $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass.$email_str);
+        $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
         if ($email->send()) {
             if ($user->save($data)) {
                 $msg = [
