@@ -9,8 +9,10 @@ use App\Models\PanitiaModel;
 use App\Models\EventModel;
 use App\Models\UserModel;
 use App\Models\ConfigModel;
+use App\Models\IPBlockedModel;
 use CodeIgniter\Database\Database;
 use DateTime;
+use Config\Services;
 
 #username : evote_admin
 #password : Admin123!
@@ -18,18 +20,76 @@ class Admin extends Controller
 {
     public function index()
     {
-        $this->masuk_v();
+        return redirect()->to(base_url("admin/masuk_v"));
+    }
+
+    public function generate_capcta()
+    {
+        $possible = "123456789";
+        $operator = "x+";
+        $a = substr($possible, mt_rand(0, 7), 1);
+        $b = substr($possible, mt_rand(0, 7), 1);
+        $angka = [
+            "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"
+        ];
+        $operator = substr($operator, mt_rand(0, 1), 1);
+        $result = 0;
+        $text_opr = "";
+        if ($operator    == "x") {
+            $result = $a * $b;
+            $text_opr = "dikali";
+        } else {
+            $result = $a + $b;
+            $text_opr = "ditambah";
+        }
+
+
+        $code["res"] = $result;
+        $code["text"] = "Berapa " . $angka[$a - 1] . " " . $text_opr . " " . $angka[$b - 1] . " ?";
+        return $code;
     }
 
     public function masuk_v()
     {
+        $data = $this->generate_capcta();
+        $session = session();
+        $session->set("captcha", $data["res"]);
         helper(['form', 'url']);
-        echo view('admin/Masuk');
+        echo view('admin/Masuk', $data);
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to(base_url("admin/masuk_v"));
     }
 
     public function masuk()
     {
+
         $session = session();
+        $captcha = $session->get("captcha");
+        if ($captcha != $this->request->getVar('captcha')) {
+            $session->setFlashdata('msg', 'Captch salah harap isi dengan benar');
+            return redirect()->to(base_url("admin/masuk_v"));
+        }
+        // cek throttler mencegah bruteforce
+        $throttler = Services::throttler();
+        $ipblocked =  new IPBlockedModel();
+        $ip_address = md5($this->request->getIPAddress());
+
+        if ($ipblocked->where('ip_address', $ip_address)->where("blocked_time>=", date('Y-m-d H:i:s'))->first()) {
+            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+            return redirect()->to(base_url("admin/masuk_v"));
+        } else if ($throttler->check($ip_address, 5, 60 * 5) === false) {
+            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+            $ipblocked->insert([
+                'ip_address' => $ip_address,
+                'blocked_time' => date('Y-m-d H:i:s', strtotime("+5 min"))
+            ]);
+            return redirect()->to(base_url("admin/masuk_v"));
+        }
+        $ipblocked->delete($ip_address);
         $admin = new AdminModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\EventModel;
+use App\Models\IPBlockedModel;
 use App\Models\PanitiaModel;
 use App\Models\RekapModel;
 use CodeIgniter\Controller;
@@ -15,7 +16,7 @@ use PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerPHPMailer;
-
+use Config\Services;
 use function GuzzleHttp\json_decode;
 
 class User extends Controller
@@ -58,13 +59,13 @@ class User extends Controller
                 $mhs = explode(',', $value->text);
                 #$url = $value->website_link;
                 $check_upn = strpos($mhs[1], 'PT : UNIVERSITAS PEMBANGUNAN NASIONAL VETERAN JAWA TIMUR');
-                $check_if = strpos($mhs[2],'Prodi: INFORMATIKA');
-                $check_if2 =strpos($mhs[2],'Prodi: TEKNIK INFORMATIKA');
-                if ($check_upn !== false&&($check_if!==false||$check_if2!==false)) {
-                    $mhs_upn =  preg_replace('/\s+/', ' ',$value->text);
+                $check_if = strpos($mhs[2], 'Prodi: INFORMATIKA');
+                $check_if2 = strpos($mhs[2], 'Prodi: TEKNIK INFORMATIKA');
+                if ($check_upn !== false && ($check_if !== false || $check_if2 !== false)) {
+                    $mhs_upn =  preg_replace('/\s+/', ' ', $value->text);
                 }
             }
-            if($mhs_upn==""){
+            if ($mhs_upn == "") {
                 $session->setFlashdata('msg', "Pastikan NPM anda terdaftar sebagai mahasiswa UPN 'Veteran' Jawa Timur di prodi Informatika, silahkan cek di dikti. Masukkan NPM pada kolom pencarian di <a target='_blank' href='https://pddikti.kemdikbud.go.id/data_mahasiswa'>kemdikbud</a>");
                 return redirect()->to(base_url('user'));
             }
@@ -72,7 +73,7 @@ class User extends Controller
             $name_check = $this->request->getVar('nama'); #str_replace($single_quote,"",$this->request->getVar('nama'));
             $response = explode(',', $mhs_upn);
             if (strtolower($response[0]) != strtolower($name_check) . "(" . $this->request->getVar('npm') . ")") {
-                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/". $this->request->getVar('npm')."'>disini</a>");
+                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/" . $this->request->getVar('npm') . "'>disini</a>");
                 return redirect()->to(base_url('user'));
             }
             helper("text");
@@ -93,7 +94,7 @@ class User extends Controller
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Temporary Password');
             $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
-            $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass.$email_str);
+            $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
                 $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled'>Kirim Ulang (01:00)</a>");
@@ -149,6 +150,24 @@ class User extends Controller
     public function masuk()
     {
         $session = session();
+
+        // cek throttler mencegah bruteforce
+        $throttler = Services::throttler();
+        $ipblocked =  new IPBlockedModel();
+        $ip_address = md5($this->request->getIPAddress());
+
+        if ($ipblocked->where('ip_address', $ip_address)->where("blocked_time>=", date('Y-m-d H:i:s'))->first()) {
+            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+            return redirect()->to(base_url("user"));
+        } else if ($throttler->check($ip_address, 5, 60 * 5) === false) {
+            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+            $ipblocked->insert([
+                'ip_address' => $ip_address,
+                'blocked_time' => date('Y-m-d H:i:s', strtotime("+5 min"))
+            ]);
+            return redirect()->to(base_url("user"));
+        }
+        $ipblocked->delete($ip_address);
         $user = new UserModel();
         $npm = $this->request->getVar('npm');
         $password = $this->request->getVar('password');
@@ -189,7 +208,6 @@ class User extends Controller
                         if ($db->tableExists('TEMP_' . $event['kode_event'])) {
                             $builder = $db->table('TEMP_' . $event['kode_event']);
                             $builder->where('npm', $npm)->delete();
-
                         }
                     }
                 }
