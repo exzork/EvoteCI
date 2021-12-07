@@ -32,7 +32,7 @@ class Event extends Migration
 			'waktu_mulai' => [
 				'type'           => 'datetime',
 			],
-			'waktu_mulai' => [
+			'waktu_selesai' => [
 				'type'           => 'datetime',
 			],
 

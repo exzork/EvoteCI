@@ -12,6 +12,8 @@ class AuthUserLog implements FilterInterface
     {
         if (session()->get('is_user')) {
             return redirect()->to(base_url("user/event"));
+        } else if (session()->get('is_panitia')) {
+            return redirect()->to(base_url("panitia"));
         }
     }
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
