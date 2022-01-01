@@ -32,8 +32,8 @@
                     <div class="container-fluid">
                         <div class="nk-header-wrap">
 
-                            <div class="nk-header-brand d-xl-none">
-                                <a href="html/index.html" class="logo-link">
+                            <div class="nk-header-brand ">
+                                <a href="<?= base_url("user/event") ?>" class="logo-link">
                                     <img class="logo-light logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo">
                                     <img class="logo-dark logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo-dark">
                                 </a>

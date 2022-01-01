@@ -240,6 +240,9 @@ pre {
   overflow: auto;
   -ms-overflow-style: scrollbar;
 }
+a:hover {
+  text-decoration: none;
+}
 .bg-main {
   background: linear-gradient(252.48deg, #f0ad5b 0%, #e19180 98.44%);
 }

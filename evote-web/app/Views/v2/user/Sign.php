@@ -27,7 +27,7 @@
                 <div class="nk-content ">
                     <div class="nk-block nk-block-middle nk-auth-body  wide-xs">
                         <div class="brand-logo pb-4 text-center">
-                            <a href="html/index.html" class="logo-link">
+                            <a href="<?= base_url() ?>" class="logo-link">
                                 <img style="max-width:80px" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?>" alt="logo-dark">
                             </a>
                         </div>
@@ -83,11 +83,11 @@
 
                             </div>
                         </div>
-                        <div id="daftarPanel" class="card card-bordered mt-0 ">
+                        <div id="daftarPanel" class="card card-bordered mt-0 " style="display: none">
                             <div class="card-inner card-inner-lg">
                                 <div class="nk-block-head">
                                     <div class="nk-block-head-content">
-                                        <h4 class="nk-block-title">
+                                        <h4 class="nk-block-title text-main">
                                             Daftar
                                             <a href="#" class="form-icon form-icon-right ">
                                                 <em class="icon ni ni-question"></em>
