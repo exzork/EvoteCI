@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="./images/favicon.png">
+    <link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
     <!-- Page Title  -->
-    <title>Login | DashLite Admin Template</title>
+    <title>Ganti Password</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.0'); ?>">
     <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
@@ -48,7 +48,9 @@
                                                     <em class="icon ni ni-user-alt"></em>
                                                 </div>
                                                 <div class="user-info d-none d-xl-block">
-                                                    <div class="user-name dropdown-indicator text-white">Pemilih</div>
+                                                    <div class="user-name dropdown-indicator text-white"><?php if (isset($_SESSION['nama_user'])) {
+                                                                                                                echo $_SESSION['nama_user'];
+                                                                                                            } ?></div>
                                                 </div>
                                             </div>
                                         </a>
@@ -57,7 +59,9 @@
                                                 <div class="user-card">
 
                                                     <div class="user-info">
-                                                        <span class="lead-text text-main">Pemilih</span>
+                                                        <span class="lead-text text-main"><?php if (isset($_SESSION['nama_user'])) {
+                                                                                                echo $_SESSION['nama_user'];
+                                                                                            } ?></span>
                                                         <span class="sub-text text-submain"><?php if (isset($_SESSION['npm'])) {
                                                                                                 echo $_SESSION['npm'];
                                                                                             } ?>@student.upnjatim.ac.id</span>
@@ -148,6 +152,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <button class="btn btn-lg btn-main btn-block" type="button" onclick="ganti_pass()">Ubah Password</button>
+                                                <a href="<?= base_url("user/event") ?>" class="btn btn-lg btn-primary text-white btn-block">Kembali ke Menu Utama</a>
                                             </div>
                                         </form>
 
