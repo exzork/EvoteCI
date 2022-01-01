@@ -1,84 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx" class="js">
+
 <head>
+	<base href="../../../">
 	<meta charset="utf-8">
-	<title>404 Page Not Found</title>
-
-	<style>
-	div.logo {
-		height: 200px;
-		width: 155px;
-		display: inline-block;
-		opacity: 0.08;
-		position: absolute;
-		top: 2rem;
-		left: 50%;
-		margin-left: -73px;
-	}
-	body {
-		height: 100%;
-		background: #fafafa;
-		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-		color: #777;
-		font-weight: 300;
-	}
-	h1 {
-		font-weight: lighter;
-		letter-spacing: 0.8;
-		font-size: 3rem;
-		margin-top: 0;
-		margin-bottom: 0;
-		color: #222;
-	}
-	.wrap {
-		max-width: 1024px;
-		margin: 5rem auto;
-		padding: 2rem;
-		background: #fff;
-		text-align: center;
-		border: 1px solid #efefef;
-		border-radius: 0.5rem;
-		position: relative;
-	}
-	pre {
-		white-space: normal;
-		margin-top: 1.5rem;
-	}
-	code {
-		background: #fafafa;
-		border: 1px solid #efefef;
-		padding: 0.5rem 1rem;
-		border-radius: 5px;
-		display: block;
-	}
-	p {
-		margin-top: 1.5rem;
-	}
-	.footer {
-		margin-top: 2rem;
-		border-top: 1px solid #efefef;
-		padding: 1em 2em 0 2em;
-		font-size: 85%;
-		color: #999;
-	}
-	a:active,
-	a:link,
-	a:visited {
-		color: #dd4814;
-	}
-</style>
+	<meta name="author" content="Softnio">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+	<!-- Fav Icon  -->
+	<link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
+	<!-- Page Title  -->
+	<title>Error 404 | Evote</title>
+	<!-- StyleSheets  -->
+	<link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.0'); ?>">
+	<link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
 </head>
-<body>
-	<div class="wrap">
-		<h1>404 - File Not Found</h1>
 
-		<p>
-			<?php if (! empty($message) && $message !== '(null)') : ?>
-				<?= esc($message) ?>
-			<?php else : ?>
-				Sorry! Cannot seem to find the page you were looking for.
-			<?php endif ?>
-		</p>
+<body class="nk-body bg-white npc-general pg-error">
+	<div class="nk-app-root">
+		<!-- main @s -->
+		<div class="nk-main ">
+			<!-- wrap @s -->
+			<div class="nk-wrap nk-wrap-nosidebar">
+				<!-- content @s -->
+				<div class="nk-content ">
+					<div class="nk-block nk-block-middle wide-md mx-auto">
+						<div class="nk-block-content nk-error-ld text-center">
+							<img class="nk-error-gfx" src="<?= base_url('img/error-404.svg') ?>" alt="">
+							<div class="wide-xs mx-auto">
+								<h3 class="nk-error-title">Anda tersesat ?</h3>
+								<p class="nk-error-text">Anda mengakses halman yang tidak pernah ada.Yuk kembali ke halaman utama</p>
+
+							</div>
+						</div>
+					</div><!-- .nk-block -->
+				</div>
+				<!-- wrap @e -->
+			</div>
+			<!-- content @e -->
+		</div>
+		<!-- main @e -->
 	</div>
-</body>
+	<!-- app-root @e -->
+	<!-- JavaScript -->
+	<script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
+	<script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
+
 </html>
