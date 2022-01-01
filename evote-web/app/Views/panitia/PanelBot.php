@@ -78,11 +78,13 @@
     table.dataTable.no-footer {
         border-bottom: none;
     }
-    .verif-photo{
-        height: 200px!important;
+
+    .verif-photo {
+        height: 200px !important;
     }
-    .verif-ktm{
-        height: 150px!important;
+
+    .verif-ktm {
+        height: 150px !important;
     }
 </style>
 <script>
@@ -143,7 +145,17 @@
 
     function add_calon() {
         var form = $("#add_calon").closest("form");
+        $("#submit_add_calon").addClass("disabled");
         var formData = new FormData(form[0]);
+        let npmWakil = formData.get("add_wakil_calon");
+        let useWakil = formData.get("use_wakil");
+        if (useWakil) {
+            if (npmWakil == "") {
+                alert_change("error", "NPM wakil tidak boleh kosong");
+                $("#submit_add_calon").removeClass("disabled");
+                return;
+            }
+        }
         $(".loader").removeClass('hidden');
         $.ajax({
             type: 'POST',
@@ -153,6 +165,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
+                $("#submit_add_calon").removeClass("disabled");
                 $(".loader").addClass('hidden');
                 $(".modal").modal('hide');
                 alert_change(data['type'], data['msg']);
@@ -182,6 +195,7 @@
     function edit_save_calon(kode) {
         var form = $("#edit_calon").closest("form");
         var formData = new FormData(form[0]);
+        $("#submit_edit_calon").addClass("disabled");
         $(".loader").removeClass('hidden');
         $.ajax({
             type: 'POST',
@@ -191,6 +205,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
+                $("#submit_edit_calon").removeClass("disabled");
                 $(".modal").modal('hide');
                 alert_change(data['type'], data['msg']);
                 $(".loader").addClass('hidden');

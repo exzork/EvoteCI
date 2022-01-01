@@ -23,7 +23,8 @@ class Calon extends Migration
 			],
 			'npm_wakil'       => [
 				'type'           => 'VARCHAR',
-				'constraint'     => '11'
+				'constraint'     => '11',
+				'null' => true,
 			],
 			'foto_calon'      => [
 				'type'           => 'VARCHAR',

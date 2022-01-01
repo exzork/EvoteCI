@@ -27,7 +27,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="$('#add_calon_modal').modal('show');">Tambah Calon</button>
+<button class="btn btn-success" onclick="$('#add_calon_modal').modal('show');$('#add_foto_calon').val(null)">Tambah Calon</button>
 <div class="modal" id="add_calon_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -66,14 +66,14 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-3">Pesan</div>
-                        <div class="col-md-9"><textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15" ></textarea></div>
+                        <div class="col-md-9"><textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15"></textarea></div>
                     </div>
                     <input type="hidden" name="add_event_calon" value="<?php echo $event; ?>">
                     <input type="hidden" name="add_pem_calon" value="<?php echo $pem; ?>">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="add_calon();">Tambahkan</button>
+                <button type="button" class="btn btn-success" id="submit_add_calon" onclick="add_calon();">Tambahkan</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
             </div>
         </div>

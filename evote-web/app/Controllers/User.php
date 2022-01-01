@@ -23,7 +23,7 @@ class User extends Controller
 {
     public function index()
     {
-        echo view('user/Sign');
+        echo view('v2/user/Sign');
     }
 
     public function daftar()
@@ -97,7 +97,7 @@ class User extends Controller
             $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
-                $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled'>Kirim Ulang (01:00)</a>");
+                $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<br><a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled mt-1'>Kirim Ulang (01:00)</a>");
                 return redirect()->to(base_url('user'));
             } else {
                 $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
@@ -106,7 +106,7 @@ class User extends Controller
             }
         } else {
             $data['validation'] = $this->validator;
-            return view('user/Sign', $data);
+            return view('v2/user/Sign', $data);
         }
     }
 
@@ -275,7 +275,7 @@ class User extends Controller
         $data = [
             'event_data' => $events
         ];
-        echo view('user/Event', $data);
+        echo view('v2/user/Event', $data);
     }
 
     public function pilih_v($kode)
@@ -302,7 +302,7 @@ class User extends Controller
         $data_diff_pem = array_diff(array_column($data_pem, 'id'), array_column($data_temp, 'pem'));
         sort($data_diff_pem, SORT_NUMERIC);
         if (count($data_diff_pem) == 0 && !$data_rekap) {
-            echo view("user/Pilih", ['rekap' => 1, 'event' => $kode]);
+            echo view("v2/user/Pilih", ['rekap' => 1, 'event' => $kode]);
             return;
         }
         $pem = $data_diff_pem[0];
@@ -336,7 +336,7 @@ class User extends Controller
             if ($data_rekap)
                 return redirect()->to(base_url('user/event'));
             else
-                echo view("user/Pilih", $data);
+                echo view("v2/user/Pilih", $data);
         } else {
             return redirect()->to(base_url('user/event'));
         }
@@ -361,7 +361,7 @@ class User extends Controller
         $data_pem = $builder->where('id', $pem)->get()->getResultArray();
         if ($pem == 0) {
             $session->setFlashdata('rekap', '1');
-            echo view("user/uPilih", [
+            echo view("v2/user/uPilih", [
                 'rekap' => 1,
                 'event' => $kode
             ]);
@@ -398,7 +398,7 @@ class User extends Controller
             if ($data_rekap)
                 return redirect()->to(base_url('user/event'));
             else
-                echo view("user/uPilih", $data);
+                echo view("v2/user/uPilih", $data);
         } else {
             return redirect()->to(base_url('user/event'));
         }
@@ -546,7 +546,8 @@ class User extends Controller
 
     public function changepass_v()
     {
-        echo view('user/ChangePass');
+        $session = session();
+        echo view('v2/user/ChangePass');
     }
 
     public function changepass()
@@ -555,6 +556,7 @@ class User extends Controller
         $session = session();
         $old_pass = $this->request->getVar('old_pass');
         $new_pass = $this->request->getVar('new_pass');
+        $new_pass2 = $this->request->getVar('confirm_new_pass');
         $npm = $_SESSION['npm'];
         $user = new UserModel();
         $data = $user->where('npm', $npm)->first();
@@ -562,6 +564,13 @@ class User extends Controller
             $msg = [
                 'type' => 'error',
                 'msg' => 'Minimal panjang password adalah 8 karakter.'
+            ];
+            echo json_encode($msg);
+            return;
+        } else if ($new_pass != $new_pass2) {
+            $msg = [
+                'type' => 'error',
+                'msg' => 'Konfirmasi password tidak sama !!.'
             ];
             echo json_encode($msg);
             return;
