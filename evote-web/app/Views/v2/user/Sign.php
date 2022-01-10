@@ -61,6 +61,7 @@
                                     <div class="form-group">
                                         <div class="form-label-group">
                                             <label class="form-label" for="password">Password</label>
+                                            <a class="link link-primary link-sm text-main" id="lupaPw">Forgot Password ?</a>
                                         </div>
                                         <div class="form-control-wrap">
                                             <a href="#" class="form-icon form-icon-right passcode-switch" data-target="password">
@@ -146,6 +147,22 @@
         </div>
         <!-- main @e -->
     </div>
+    <div class="modal" id="forgetModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Lupa password ?</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="npmForgetSend">Masukkan NPM</label>
+                    <input class="form-control" type="text" maxlength="11" id="npmForgetSend">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-main" onclick="window.location='<?php echo base_url('user/forgot') ?>/'+$('#npmForgetSend').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal" id="resendEmailModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -157,7 +174,7 @@
                     <input class="form-control" type="text" maxlength="11" id="npmResendEmail">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" onclick="window.location='<?php echo base_url('user/resend/') ?>/'+$('#npmResendEmail').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
+                    <button class="btn btn-main" onclick="window.location='<?php echo base_url('user/resend/') ?>/'+$('#npmResendEmail').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
                 </div>
             </div>
         </div>
@@ -168,6 +185,10 @@
     <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
     <script>
         $(document).ready(function() {
+            $("#lupaPw").on("click", function(e) {
+                e.preventDefault();
+                $("#forgetModal").modal("show");
+            })
             if ($("#resend_email").length > 0) {
                 let timer2 = $("#resend_email").html().match(/\((.*)\)/)[1];
                 let interval = setInterval(function() {

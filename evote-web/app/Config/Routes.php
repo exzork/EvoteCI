@@ -33,6 +33,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories 
 
 $routes->get('/home', 'Home::index');
+
 $routes->get('user/event', 'User::event', ['filter' => 'authUser']);
 $routes->get('user', 'User::index', ['filter' => 'authUserLog']);
 //$routes->get('/');
@@ -41,6 +42,9 @@ $routes->get('/', 'User::index', ['filter' => 'authUserLog']);
 $routes->get('/user/pilih_v/(:alphanum)', 'User::pilih_v/$1', ['filter' => 'authUser']);
 $routes->get('/user/pilih_u/(:alphanum)/(:num)', 'User::pilih_u/$1/$2', ['filter' => 'authUser']);
 $routes->post('/user/pilih', 'User::pilih', ['filter' => 'authUser']);
+$routes->get('/user/forget', 'User::forgotPassword');
+$routes->get('/user/password/(:alphanum)', 'User::changeForget/$1');
+$routes->post('/user/password/(:alphanum)', 'User::changeForget/$1');
 //$routes->get('/user/masuk_v', 'User::masuk_v', ['filter' => 'authUserLog']);
 //$routes->get('/user/daftar_v', 'User::daftar_v', ['filter' => 'authUserLog']);
 //panitia

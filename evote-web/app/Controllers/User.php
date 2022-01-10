@@ -113,13 +113,73 @@ class User extends Controller
 
     public function changeForget($token)
     {
+        $session = session();
         $tokenModel = new TokenModel();
         $data = $tokenModel->where('token', $token)->first();
-        if ($data) {
-            return view('v2/user/ForgotPass', $data);
-        } else {
-            return redirect()->to(base_url('user'));
+
+        if ($this->request->getMethod() == "post") {
+
+            helper(['form']);
+            $rules = [
+                'new_pass' => [
+                    'rules' => 'required|min_length[8]|matches[confirm_new_pass]',
+                    'errors' => [
+                        'required' => "Password tidak boleh dikosongi.",
+                        'min_length' => "Password minimal 8 karakter.",
+                        'matches' => "Password tidak sama dengan konfirmasi password."
+                    ]
+                ],
+                'confirm_new_pass' => [
+                    'rules' => 'required',
+                    'errors' => [
+
+                        'required' => "Harap isi konfirmasi password"
+                    ]
+                ],
+                'token_data' => [
+                    'rules' => 'required',
+                    'errors' => [
+
+                        'required' => "Token tidak ditemukan"
+                    ]
+                ]
+            ];
+
+            if ($this->validate($rules)) {
+
+                $data = $tokenModel->where('token', $token)->first();
+                if ($data) {
+                    $user = new UserModel();
+                    $user_data = $user->where('email_user', $data['email'])->first();
+                    // Ubah passowrd
+                    $user->update($user_data['npm'], ['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)]);
+                    // Hapus token
+                    $tokenModel->where('token', $token)->delete();
+                    $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
+                    return redirect()->to(base_url('user'));
+                } else {
+                    $session->setFlashdata('msg', "Token tidak ditemukan");
+                    return redirect()->to(base_url('user'));
+                }
+            } else {
+                if ($token) {
+                    $data['token'] = $token;
+                    $data['validation'] = $this->validator;
+                    return view('v2/user/ForgotPass', $data);
+                } else {
+                    $session->setFlashdata('msg', "Token tidak ditemukan");
+                    return redirect()->to(base_url('user'));
+                }
+            }
         }
+        if ($data) {
+            if ($data['status'] == 0) {
+                return view('v2/user/ForgotPass', $data);
+            }
+            $session->setFlashdata('msg', "Token expired harap minta lagi");
+        }
+
+        return redirect()->to(base_url('user'));
     }
 
     public function formForget()
@@ -128,48 +188,81 @@ class User extends Controller
         $tokenModel = new TokenModel();
         helper(['form']);
         $rules = [
-            'nama' => [
-                'rules' => 'required',
+            'new_pass' => [
+                'rules' => 'required|min_length[8]|matches[confirm_new_pass]',
                 'errors' => [
-                    'required' => "Nama tidak boleh dikosongi."
+                    'required' => "Password tidak boleh dikosongi.",
+                    'min_length' => "Password minimal 8 karakter.",
+                    'matches' => "Password tidak sama dengan konfirmasi password."
                 ]
             ],
-            'npm' => [
-                'rules' => 'required|max_length[11]|numeric|is_unique[user.npm]',
+            'confirm_new_pass' => [
+                'rules' => 'required',
                 'errors' => [
-                    'is_unique' => "NPM anda sudah terdaftar.",
-                    'required' => "NPM tidak boleh dikosongi."
+
+                    'required' => "Harap isi konfirmasi password"
+                ]
+            ],
+            'token' => [
+                'rules' => 'required',
+                'errors' => [
+
+                    'required' => "Token tidak ditemukan"
                 ]
             ]
         ];
+        $token = $this->request->getVar("token");
         if ($this->validate($rules)) {
-            $token = $this->request->getVar("token");
+
             $data = $tokenModel->where('token', $token)->first();
             if ($data) {
                 $user = new UserModel();
-                // update data dek sini
-
-                ///
+                $user_data = $user->where('email_user', $data['email'])->first();
+                // Ubah passowrd
+                $user->update($user_data['npm'], ['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)]);
+                // Hapus token
                 $tokenModel->where('token', $token)->delete();
                 $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
                 return redirect()->to(base_url('user'));
             } else {
+                $session->setFlashdata('msg', "Token tidak ditemukan");
                 return redirect()->to(base_url('user'));
             }
         } else {
+            if ($token) {
+                $data['token'] = $token;
+                $data['validation'] = $this->validator;
+                return view('v2/user/ForgotPass', $data);
+            } else {
+                $session->setFlashdata('msg', "Token tidak ditemukan");
+                return redirect()->to(base_url('user'));
+            }
         }
     }
 
-
-    public function forgotPassword($email_to)
+    //ganti post
+    public function forgot($email_to)
     {
+
         $session = session();
+        $ip_address = md5($this->request->getIPAddress());
+        $throttler = Services::throttler();
+        if ($throttler->check($ip_address, 5, 60) === false) {
+            $session->setFlashdata('msg', "Anda terlalu banyak mencoba merubah password. Silahkan coba lagi nanti.");
+            return redirect()->to(base_url("user"));
+        }
+
+
         $user = new UserModel();
         $tokenModel = new TokenModel();
+        if ($tokenModel->where('email', $email_to)->where('status', 0)->first()) {
+            $session->setFlashdata('msg', "Penggantian password telah diajukan sebelumnya harap check email atau spam");
+            return redirect()->to(base_url('user'));
+        }
         $data_user = $user->where('email_user', $email_to)->first();
         if ($data_user) {
             helper("text");
-            $token = date("yyyyMMhhddiiss") . random_string("alnum", 8);
+            $token = date("YmdHis") . random_string("alnum", 8);
             $email = \Config\Services::email();
             $main_email = getenv("EMAIL_SENDER");
             $email->setTo($email_to);
@@ -200,6 +293,12 @@ class User extends Controller
     public function resend($email_to)
     {
         $session = session();
+        $ip_address = md5($this->request->getIPAddress());
+        $throttler = Services::throttler();
+        if ($throttler->check($ip_address, 5, 60) === false) {
+            $session->setFlashdata('msg', "Anda terlalu banyak mencoba merubah password. Silahkan coba lagi nanti.");
+            return redirect()->to(base_url("user"));
+        }
         $user = new UserModel();
         $data_user = $user->where('email_user', $email_to)->first();
         if ($data_user) {
