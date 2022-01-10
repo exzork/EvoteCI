@@ -6,6 +6,7 @@ use App\Models\EventModel;
 use App\Models\IPBlockedModel;
 use App\Models\PanitiaModel;
 use App\Models\RekapModel;
+use App\Models\TokenModel;
 use CodeIgniter\Controller;
 use App\Models\UserModel;
 use DateTime;
@@ -110,6 +111,92 @@ class User extends Controller
         }
     }
 
+    public function changeForget($token)
+    {
+        $tokenModel = new TokenModel();
+        $data = $tokenModel->where('token', $token)->first();
+        if ($data) {
+            return view('v2/user/ForgotPass', $data);
+        } else {
+            return redirect()->to(base_url('user'));
+        }
+    }
+
+    public function formForget()
+    {
+        $session = session();
+        $tokenModel = new TokenModel();
+        helper(['form']);
+        $rules = [
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => "Nama tidak boleh dikosongi."
+                ]
+            ],
+            'npm' => [
+                'rules' => 'required|max_length[11]|numeric|is_unique[user.npm]',
+                'errors' => [
+                    'is_unique' => "NPM anda sudah terdaftar.",
+                    'required' => "NPM tidak boleh dikosongi."
+                ]
+            ]
+        ];
+        if ($this->validate($rules)) {
+            $token = $this->request->getVar("token");
+            $data = $tokenModel->where('token', $token)->first();
+            if ($data) {
+                $user = new UserModel();
+                // update data dek sini
+
+                ///
+                $tokenModel->where('token', $token)->delete();
+                $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
+                return redirect()->to(base_url('user'));
+            } else {
+                return redirect()->to(base_url('user'));
+            }
+        } else {
+        }
+    }
+
+
+    public function forgotPassword($email_to)
+    {
+        $session = session();
+        $user = new UserModel();
+        $tokenModel = new TokenModel();
+        $data_user = $user->where('email_user', $email_to)->first();
+        if ($data_user) {
+            helper("text");
+            $token = date("yyyyMMhhddiiss") . random_string("alnum", 8);
+            $email = \Config\Services::email();
+            $main_email = getenv("EMAIL_SENDER");
+            $email->setTo($email_to);
+            $email->setFrom($main_email, "Admin Evote IF");
+            $email->setReplyTo($main_email, "Admin Evote IF");
+            $email->setSubject('Lupa Password');
+            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Rubah Password</a>");
+
+            if ($email->send()) {
+                $token_data = [
+                    'email' => $email_to,
+                    'token' => $token,
+
+                ];
+                $tokenModel->insert($token_data);
+                $session->setFlashdata('msg', "Berhasil mengirim link merubah password email, Cek password di email " . $email_to . "");
+                return redirect()->to(base_url('user'));
+            } else {
+                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
+                return redirect()->to(base_url('user'));
+            }
+        } else {
+            $session->setFlashdata('msg', "Akun tidak ditemukan");
+            return redirect()->to(base_url('user'));
+        }
+    }
+
     public function resend($email_to)
     {
         $session = session();
@@ -147,6 +234,8 @@ class User extends Controller
         }
     }
 
+
+
     public function masuk()
     {
         $session = session();
@@ -155,19 +244,37 @@ class User extends Controller
         $throttler = Services::throttler();
         $ipblocked =  new IPBlockedModel();
         $ip_address = md5($this->request->getIPAddress());
+        $dataIPAddress = $ipblocked->where('ip_address', $ip_address)->first();
 
-        if ($ipblocked->where('ip_address', $ip_address)->where("blocked_time>=", date('Y-m-d H:i:s'))->first()) {
-            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
-            return redirect()->to(base_url("user"));
-        } else if ($throttler->check($ip_address, 5, 60 * 5) === false) {
-            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
-            $ipblocked->insert([
-                'ip_address' => $ip_address,
-                'blocked_time' => date('Y-m-d H:i:s', strtotime("+5 min"))
-            ]);
+        if ($dataIPAddress) {
+
+            if ($dataIPAddress['blocked_time'] >= date('Y-m-d H:i:s')) {
+                if ($dataIPAddress['times'] == 1) {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                } else {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                }
+                return redirect()->to(base_url("user"));
+            }
+        }
+        if ($throttler->check($ip_address, 5, 60 * 5) === false) {
+
+            if ($dataIPAddress) {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                $dataIPAddress['blocked_time'] = date('Y-m-d H:i:s', strtotime('+5 min'));
+                $dataIPAddress['times'] = 2;
+                $ipblocked->update($ip_address, $dataIPAddress);
+            } else {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                $ipblocked->insert([
+                    'ip_address' => $ip_address,
+                    'blocked_time' => date('Y-m-d H:i:s', strtotime("+1 min")),
+                    'times' => 1
+                ]);
+            }
             return redirect()->to(base_url("user"));
         }
-        $ipblocked->delete($ip_address);
+
         $user = new UserModel();
         $npm = $this->request->getVar('npm');
         $password = $this->request->getVar('password');

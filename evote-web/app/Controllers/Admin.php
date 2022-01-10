@@ -77,19 +77,37 @@ class Admin extends Controller
         $throttler = Services::throttler();
         $ipblocked =  new IPBlockedModel();
         $ip_address = md5($this->request->getIPAddress());
+        $dataIPAddress = $ipblocked->where('ip_address', $ip_address)->first();
+        if ($dataIPAddress) {
 
-        if ($ipblocked->where('ip_address', $ip_address)->where("blocked_time>=", date('Y-m-d H:i:s'))->first()) {
-            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
-            return redirect()->to(base_url("admin/masuk_v"));
-        } else if ($throttler->check($ip_address, 5, 60 * 5) === false) {
-            $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
-            $ipblocked->insert([
-                'ip_address' => $ip_address,
-                'blocked_time' => date('Y-m-d H:i:s', strtotime("+5 min"))
-            ]);
+            if ($dataIPAddress['blocked_time'] >= date('Y-m-d H:i:s')) {
+                if ($dataIPAddress['times'] == 1) {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                } else {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                }
+                return redirect()->to(base_url("admin/masuk_v"));
+            }
+        }
+        if ($throttler->check($ip_address, 5, 60 * 5) === false) {
+
+            if ($dataIPAddress) {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                $dataIPAddress['blocked_time'] = date('Y-m-d H:i:s', strtotime('+5 min'));
+                $dataIPAddress['times'] = 2;
+                $ipblocked->update($ip_address, $dataIPAddress);
+            } else {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                $ipblocked->insert([
+                    'ip_address' => $ip_address,
+                    'blocked_time' => date('Y-m-d H:i:s', strtotime("+1 min")),
+                    'times' => 1
+                ]);
+            }
             return redirect()->to(base_url("admin/masuk_v"));
         }
-        $ipblocked->delete($ip_address);
+
+
         $admin = new AdminModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');

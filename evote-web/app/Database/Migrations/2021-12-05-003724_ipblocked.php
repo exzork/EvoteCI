@@ -17,7 +17,10 @@ class Ipblocked extends Migration
 			'blocked_time'       => [
 				'type'           => 'datetime',
 			],
-
+			'times'              => [
+				'type'           => 'INT',
+				'constraint'     => '11',
+			],
 
 		]);
 
