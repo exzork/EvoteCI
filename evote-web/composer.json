@@ -22,7 +22,8 @@
 		"paragonie/random-lib": "^2.0",
 		"tatter/assets": "^2.2",
 		"google/apiclient": "2.4.1",
-		"vlucas/phpdotenv": "*"
+		"vlucas/phpdotenv": "*",
+		"natanfelles/codeigniter-db": "^1.0"
 	},
 	"require-dev": {
 		"codeigniter4/codeigniter4-standard": "^1.0",
