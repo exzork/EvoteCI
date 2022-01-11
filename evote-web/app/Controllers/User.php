@@ -155,7 +155,7 @@ class User extends Controller
                     $user = new UserModel();
                     $user_data = $user->where('email_user', $data['email'])->first();
                     // Ubah passowrd
-                    $user->update($user_data['npm'], ['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)]);
+                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->update();
                     // Hapus token
                     $tokenModel->where('token', $token)->delete();
                     $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
