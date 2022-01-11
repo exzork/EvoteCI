@@ -16,3 +16,12 @@
 ``php spark db:seed configs``
 6. Jalankan website
 ``php spark serve``
+
+
+## Pembuat
+1. Muhammad Eko - https://github.com/muhammadeko
+
+## Pengembang
+1. Novandi Kevin Pratama - https://github.com/novandikp
+
+
