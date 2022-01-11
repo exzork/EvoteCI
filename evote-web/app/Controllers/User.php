@@ -22,9 +22,12 @@ use function GuzzleHttp\json_decode;
 
 class User extends Controller
 {
+    // Ganti tema sesuai yang diiingin (default: '')
+    private $theme = 'v2';
+
     public function index()
     {
-        echo view('v2/user/Sign');
+        echo view($this->theme . '/user/Sign');
     }
 
     public function daftar()
@@ -107,7 +110,7 @@ class User extends Controller
             }
         } else {
             $data['validation'] = $this->validator;
-            return view('v2/user/Sign', $data);
+            return view($this->theme . '/user/Sign', $data);
         }
     }
 
@@ -165,7 +168,7 @@ class User extends Controller
                 if ($token) {
                     $data['token'] = $token;
                     $data['validation'] = $this->validator;
-                    return view('v2/user/ForgotPass', $data);
+                    return view($this->theme . '/user/ForgotPass', $data);
                 } else {
                     $session->setFlashdata('msg', "Token tidak ditemukan");
                     return redirect()->to(base_url('user'));
@@ -174,7 +177,7 @@ class User extends Controller
         }
         if ($data) {
             if ($data['status'] == 0) {
-                return view('v2/user/ForgotPass', $data);
+                return view($this->theme . '/user/ForgotPass', $data);
             }
             $session->setFlashdata('msg', "Token expired harap minta lagi");
         }
@@ -232,7 +235,7 @@ class User extends Controller
             if ($token) {
                 $data['token'] = $token;
                 $data['validation'] = $this->validator;
-                return view('v2/user/ForgotPass', $data);
+                return view($this->theme . '/user/ForgotPass', $data);
             } else {
                 $session->setFlashdata('msg', "Token tidak ditemukan");
                 return redirect()->to(base_url('user'));
@@ -481,7 +484,7 @@ class User extends Controller
         $data = [
             'event_data' => $events
         ];
-        echo view('v2/user/Event', $data);
+        echo view($this->theme . '/user/Event', $data);
     }
 
     public function pilih_v($kode)
@@ -753,7 +756,7 @@ class User extends Controller
     public function changepass_v()
     {
         $session = session();
-        echo view('v2/user/ChangePass');
+        echo view($this->theme . '/user/ChangePass');
     }
 
     public function changepass()
