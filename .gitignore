@@ -1,3 +1,6 @@
 .env
 google-api-key.json
 composer.lock
+**/writable/cache/*
+**/writable/debugbar/*
+**/writable/session/*
