@@ -114,6 +114,7 @@
                             var form = $("#add_event").closest("form");
                             var formData = new FormData(form[0]);
                             $(".loader").removeClass('hidden');
+                            $("#btnadd_event").attr("disabled", true);
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo base_url('admin/add_event'); ?>',
@@ -122,8 +123,9 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#btnadd_event").attr("disabled", false);
                                     $(".loader").addClass('hidden');
-                                    $(".modal").modal('hide');
+                                    $("#add_event_modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
                                     $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {
                                         $("#main-content").html(data);
@@ -174,6 +176,7 @@
                             var form = $("#edit_event").closest("form");
                             var formData = new FormData(form[0]);
                             $(".loader").removeClass('hidden');
+                            $("#btnedit_event").attr("disabled", true);
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo base_url('admin/edit_event'); ?>/' + kode,
@@ -183,7 +186,8 @@
                                 contentType: false,
                                 success: function(data) {
                                     $(".loader").addClass('hidden');
-                                    $(".modal").modal('hide');
+                                    $("#btnedit_event").attr("disabled", false);
+                                    $("#edit_event_modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
                                     $(".loader").removeClass('hidden');
                                     $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {

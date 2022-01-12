@@ -27,7 +27,8 @@ class User extends Controller
 
     public function index()
     {
-        echo view($this->theme . '/user/Sign');
+        $data['youtube'] =  getenv("ID_YOUTUBE");
+        echo view($this->theme . '/user/Sign', $data);
     }
 
     public function daftar()
@@ -110,6 +111,7 @@ class User extends Controller
             }
         } else {
             $data['validation'] = $this->validator;
+            $data['youtube'] =  getenv("ID_YOUTUBE");
             return view($this->theme . '/user/Sign', $data);
         }
     }

@@ -49,7 +49,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" onclick="edit_event_save('<?php echo $event_data['kode_event'];  ?>');">Simpan</button>
+            <button type="button" id="btnedit_event" class="btn btn-success" onclick="edit_event_save('<?php echo $event_data['kode_event'];  ?>');">Simpan</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
         </div>
     </div>

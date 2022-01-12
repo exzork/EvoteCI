@@ -36,7 +36,7 @@
                                     <div class="nk-block-head-content">
                                         <h4 class="nk-block-title">
                                             <span class="text-main">Masuk</span>
-                                            <a href="#" class="form-icon form-icon-right ">
+                                            <a href="#" class="form-icon form-icon-right show-youtube">
                                                 <em class="icon ni ni-question"></em>
                                             </a>
                                         </h4>
@@ -89,7 +89,7 @@
                                     <div class="nk-block-head-content">
                                         <h4 class="nk-block-title text-main">
                                             Daftar
-                                            <a href="#" class="form-icon form-icon-right ">
+                                            <a href="#" class="form-icon form-icon-right show-youtube">
                                                 <em class="icon ni ni-question"></em>
                                             </a>
                                         </h4>
@@ -157,7 +157,7 @@
                     <input class="form-control" type="text" maxlength="11" id="npmForgetSend">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-main" onclick="window.location='<?php echo base_url('user/forgot') ?>/'+$('#npmForgetSend').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
+                    <button class="btn btn-main" id="sendForgetPassword">Kirim ulang.</button>
                 </div>
             </div>
         </div>
@@ -173,17 +173,53 @@
                     <input class="form-control" type="text" maxlength="11" id="npmResendEmail">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-main" onclick="window.location='<?php echo base_url('user/resend/') ?>/'+$('#npmResendEmail').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
+                    <button class="btn btn-main" id="resendPassword">Kirim ulang.</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always" allow="autoplay"></iframe>
+                        </div>
+                        <a href="https://www.youtube.com/watch?v=<?= $youtube ?>" target="_blank" class="btn btn-main mt-2">Buka di tab baru</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- app-root @e -->
     <!-- JavaScript -->
     <script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
     <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
     <script>
         $(document).ready(function() {
+            var $videoSrc = "<?= $youtube ?>";
+            $("#video").addClass("d-none")
+            $(".show-youtube").on("click", function(e) {
+                e.preventDefault();
+                $("#video").removeClass("d-none")
+                $("#video").attr('src', "https://www.youtube.com/embed/" + $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+                $('#youtubeModal').modal('show');
+            })
+
+            $('#youtubeModal').on('shown.bs.modal', function(e) {
+                $("#video").removeClass("d-none")
+                $("#video").attr('src', "https://www.youtube.com/embed/" + $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+            })
+
+            $('#youtubeModal').on('hide.bs.modal', function(e) {
+                $("#video").addClass("d-none")
+                $("#video").attr('src', $videoSrc);
+            })
+
             $("#lupaPw").on("click", function(e) {
                 e.preventDefault();
                 $("#forgetModal").modal("show");
@@ -223,6 +259,15 @@
                 $('#masukPanel').slideUp("slow");
                 $('#daftarPanel').slideDown("slow");
             });
+            $("#sendForgetPassword").on('click', function(e) {
+                $(this).attr("disabled", true);
+                window.location = '<?php echo base_url('user/forgot') ?>/' + $('#npmForgetSend').val() + '@student.upnjatim.ac.id';
+            })
+
+            $("#resendPassword").on('click', function(e) {
+                $(this).attr("disabled", true);
+                window.location = '<?php echo base_url('user/resend/') ?>/' + $('#npmResendEmail').val() + '@student.upnjatim.ac.id';
+            })
         });
     </script>
 </body>
