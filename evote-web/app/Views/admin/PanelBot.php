@@ -51,6 +51,7 @@
                     </style>
                     <div class="loader hidden"></div>
                     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
+                    <script type="text/javascript" src="<?= base_url('simeditor/trumbowyg.min.js') ?>"></script>
                     <script src="<?php echo base_url('js/bootstrap.bundle.min.js'); ?>"></script>
                     <script src="<?php echo base_url('js/moment.js'); ?>"></script>
                     <script src="<?php echo base_url('js/id.js'); ?>"></script>
@@ -58,6 +59,10 @@
                     <script src="<?php echo base_url('js/adminlte.js'); ?>"></script>
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
                     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+                    <script>
+                        $.trumbowyg.svgPath = "/simeditor/icons.svg"
+                        $('#add_deskripsi_event').trumbowyg();
+                    </script>
                     <style>
                         table {
                             table-layout: fixed;
@@ -139,6 +144,11 @@
                             $(".loader").removeClass('hidden');
                             $.get('<?php echo base_url('admin/edit_event_v'); ?>/' + kode, function(data) {
                                 $("#edit_event_modal").html(data);
+                                try {
+                                    $('#edit_deskripsi_event').trumbowyg();
+                                } catch (e) {
+
+                                }
                                 $(".loader").addClass('hidden');
                                 $("#edit_event_modal").modal('show');
                                 $("#edit_mulai_event").datetimepicker({

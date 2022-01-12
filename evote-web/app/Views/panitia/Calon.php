@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('simeditor/trumbowyg.min.css') ?>" />
 <table class="table table-bordered table-datatable" id="calon_table">
     <thead>
         <tr>
@@ -16,7 +17,7 @@
                 <td><?php echo $calon['kode_calon']; ?></td>
                 <td><?php echo $calon['nama_ketua']; ?><br><?php echo $calon['npm_ketua']; ?></td>
                 <td><?php echo $calon['nama_wakil']; ?><br><?php echo $calon['npm_wakil']; ?></td>
-                <td><img class="img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt=""> </td>
+                <td><img class="img-fluid" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt=""> </td>
                 <td><?php echo $calon['pesan']; ?></td>
                 <td><?php echo $calon['nama_panitia']; ?></td>
                 <td>
@@ -65,8 +66,11 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-md-3">Pesan</div>
-                        <div class="col-md-9"><textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15"></textarea></div>
+                        <div class="col-md-12">Pesan</div>
+                        <div class="col-md-12">
+                            <textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15"></textarea>
+
+                        </div>
                     </div>
                     <input type="hidden" name="add_event_calon" value="<?php echo $event; ?>">
                     <input type="hidden" name="add_pem_calon" value="<?php echo $pem; ?>">

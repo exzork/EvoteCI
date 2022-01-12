@@ -57,6 +57,11 @@
 <script src="<?php echo base_url('js/adminlte.js'); ?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?= base_url('simeditor/trumbowyg.min.js') ?>"></script>
+<script>
+    $.trumbowyg.svgPath = "/simeditor/icons.svg"
+    $('#add_pesan_calon').trumbowyg();
+</script>
 <style>
     table {
         table-layout: fixed;
@@ -186,8 +191,18 @@
     function edit_calon(kode) {
         $(".loader").removeClass('hidden');
         $.get("<?php echo base_url('panitia/edit_calon_v'); ?>/" + kode, function(data) {
+
             $(".loader").addClass('hidden');
             $("#edit_calon_modal").html(data);
+            try {
+
+                //tambahkan editor biar lebih efisien
+                $('#edit_pesan_calon').trumbowyg();
+
+            } catch (e) {
+                console.log(e);
+            }
+
             $("#edit_calon_modal").modal('show');
         });
     }

@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="hidden" id="pesan_<?php echo $calon['kode_calon']; ?>">
-                                    <span class="text-left"><?php echo $calon['pesan']; ?></span>
+                                    <span class="text-left mt-2"><?php echo $calon['pesan']; ?></span>
                                 </div>
                             <?php endforeach; ?>
 

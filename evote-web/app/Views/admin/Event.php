@@ -1,3 +1,7 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('simeditor/trumbowyg.min.css') ?>" />
+
+
+
 <table class="table table-bordered table-datatable" id="event_table">
     <thead>
         <tr>

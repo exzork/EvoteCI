@@ -95,19 +95,23 @@
                             <div class="nk-content-body container">
                                 <?php foreach ($event_data as $key => $event) { ?>
                                     <div class="card">
-                                        <div class="card-inner card-inner-xl text-center">
+                                        <div class="card-inner card-inner-xl ">
                                             <article class="entry ">
-                                                <h3 class="text-main"><?php echo $event['nama_event']; ?></h3>
-                                                <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
-                                                <p class="mt-0 desc_lomba text-main"><?php echo $event['deskripsi']; ?></p>
+                                                <h3 class="text-main text-center"><?php echo $event['nama_event']; ?></h3>
+                                                <div class="w-100 text-center">
+                                                    <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
+                                                </div>
+                                                <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
                                                 <?php
                                                 $classBtn = "btn-main";
+                                                $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
                                                 if ($event['pilih'] == 1) {
                                                     $classBtn = "btn-success";
+                                                    $linkPiih = "#";
                                                 }
                                                 switch ($event['status']) {
                                                     case 1:
-                                                        echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . base_url("/user/pilih_v/" . $event['kode_event']) . "'>Pilih";
+                                                        echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . $linkPiih . "'>Pilih";
                                                         echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
                                                         echo "</a>";
                                                         break;
