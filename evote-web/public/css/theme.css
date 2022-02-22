@@ -339,6 +339,12 @@ a {
   color: white;
 }
 
+.link-list {
+  list-style: none;
+}
+.passcode-icon.icon-show.icon {
+  margin-right: 10px;
+}
 @media only screen and (max-width: 720px) {
   .img-event {
     max-width: 200px;
