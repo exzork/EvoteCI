@@ -72,6 +72,7 @@ $routes->get('/panitia/pemilih/(:alphanum)', "Panitia::pemilih/$1", ['filter' =>
 $routes->get('/panitia/get_pemilih/(:alphanum)', "Panitia::get_pemilih/$1", ['filter' => 'authPanitia']);
 $routes->post('/panitia/add_pemilih', "Panitia::add_pemilih", ['filter' => 'authPanitia']);
 $routes->get('/panitia/delete_pemilih/(:alphanum)', "Panitia::delete_pemilih/$1", ['filter' => 'authPanitia']);
+$routes->post('/panitia/271201delete_all_pemilih2601/(:alphanum)', "Panitia::delete_all_pemilih/$1", ['filter' => 'authPanitia']);
 //admin 
 $routes->get('/admin/masuk_v', 'Admin::masuk_v', ['filter' => 'authAdminLog']);
 $routes->get('/admin/logout', 'Admin::logout');

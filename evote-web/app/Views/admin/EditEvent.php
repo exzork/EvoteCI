@@ -13,7 +13,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-9 offset-md-3">
-                        <div class="py-1">
+                        <div class="p-2">
                             <label>Foto Lama</label>
                             <img class="img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $event_data['foto_event']; ?>" alt="">
                         </div>
