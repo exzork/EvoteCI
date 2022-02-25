@@ -18,6 +18,7 @@ use Config\Services;
 #password : Admin123!
 class Admin extends Controller
 {
+
     public function index()
     {
         return redirect()->to(base_url("admin/masuk_v"));
@@ -111,7 +112,6 @@ class Admin extends Controller
         $admin = new AdminModel();
         $username = $this->request->getVar('username');
         $password = $this->request->getVar('password');
-        //var_dump($this->request);
         $data = $admin->where('username_admin', $username)->first();
         $admin->set(['password_admin' => password_hash(getenv("DEFAULT_ADMIN_PASSWORD"), PASSWORD_DEFAULT)])->where('username_admin', $username)->update();
 
@@ -128,11 +128,11 @@ class Admin extends Controller
                 $session->set($ses_data);
                 return redirect()->to("event");
             } else {
-                $session->setFlashdata('msg', 'Password anda salah.');
+                $session->setFlashdata('msg', 'Username atau Password anda salah.');
                 return redirect()->to("masuk_v");
             }
         } else {
-            $session->setFlashdata('msg', 'Username tidak terdaftar.');
+            $session->setFlashdata('msg', 'Username atau Password anda salah.');
             return redirect()->to("masuk_v");
         }
     }
@@ -321,7 +321,7 @@ class Admin extends Controller
         $selesai_event = $this->request->getVar("edit_selesai_event");
         $selesai_event = DateTime::createFromFormat("d/m/Y H.i", $selesai_event);
         $deskripsi_event = $this->request->getVar("edit_deskripsi_event");
-        $photo_event = $_FILES['edit_foto_event']['name'];
+
         if ($mulai_event > $selesai_event) {
             $msg = array(
                 'msg' => "Waktu selesai event tidak boleh mendahului waktu mulai event.",
@@ -336,7 +336,7 @@ class Admin extends Controller
                 'waktu_selesai' => $selesai_event->format('Y-m-d H:i')
             );
             $event_data = $event->where('kode_event', $kode)->first();
-            if (!is_null($photo_event)) {
+            if (file_exists($_FILES['edit_foto_event']['tmp_name']) && is_uploaded_file($_FILES['edit_foto_event']['tmp_name'])) {
                 $old_photoID = $event_data['foto_event'];
                 if ($new_photoID = gdupload($_FILES['edit_foto_event']['tmp_name'], $kode)) {
                     gddelete($old_photoID);
