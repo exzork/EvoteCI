@@ -32,6 +32,7 @@ class Rekap extends Migration
 			'valid'      => [
 				'type'           => 'tinyint',
 				'constraint'     => 1,
+				'null'           => true,
 			],
 			'tanggal_pilih DATETIME DEFAULT CURRENT_TIMESTAMP'
 
