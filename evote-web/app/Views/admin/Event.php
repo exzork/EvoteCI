@@ -40,7 +40,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="$('#add_event_modal').modal('show');">Tambah Event</button>
+<button class="btn btn-success" onclick="show_modal_event()">Tambah Event</button>
 <div class="modal" id="add_event_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

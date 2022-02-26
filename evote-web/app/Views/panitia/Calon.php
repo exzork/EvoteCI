@@ -28,7 +28,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="$('#add_calon_modal').modal('show');$('#add_foto_calon').val(null)">Tambah Calon</button>
+<button class="btn btn-success" onclick="show_add_calon()">Tambah Calon</button>
 <div class="modal" id="add_calon_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -49,7 +49,7 @@
                         <div class="col-md-9 input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" name="use_wakil" checked>
+                                    <input type="checkbox" name="use_wakil" id="use_wakil" checked>
                                 </div>
                             </div>
                             <input type="text" class="form-control" placeholder="NPM" name="add_wakil_calon" oninput="check_wakil($(this).val());">

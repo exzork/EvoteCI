@@ -61,6 +61,19 @@
 <script>
     $.trumbowyg.svgPath = "/simeditor/icons.svg"
     $('#add_pesan_calon').trumbowyg();
+
+    function show_add_calon() {
+        $('#add_calon_modal').modal('show');
+        $('#add_pesan_calon').trumbowyg();
+        //Ketika uncentang maka matikan npm nya
+        $("#use_wakil").on("change", function() {
+            if ($(this).is(":checked")) {
+                $("input[name='add_wakil_calon']").attr("readonly", false);
+            } else {
+                $("input[name='add_wakil_calon']").attr("readonly", true);
+            }
+        });
+    }
 </script>
 <style>
     table {
@@ -124,6 +137,9 @@
     // Pesan error
     function ajaxt_error() {
         alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+        if (!$(".loader").hasClass('hidden')) {
+            $(".loader").addClass('hidden');
+        }
     }
 
 

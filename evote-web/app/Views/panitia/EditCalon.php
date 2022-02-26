@@ -20,6 +20,12 @@
                     </div>
                 </div>
                 <div class="row mt-2">
+                    <div class="col-md-9 offset-md-3">
+                        <div class="p-3">
+                            <label>Foto Lama</label>
+                            <img class="img-fluid d-block" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/d/<?php echo $data_calon[0]['foto_calon']; ?>" alt="">
+                        </div>
+                    </div>
                     <div class="col-md-3">Foto</div>
                     <div class="col-md-9">
                         <div class="custom-file">

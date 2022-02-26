@@ -67,7 +67,6 @@ class Admin extends Controller
 
     public function masuk()
     {
-
         $session = session();
         $captcha = $session->get("captcha");
         if ($captcha != $this->request->getVar('captcha')) {
@@ -80,7 +79,6 @@ class Admin extends Controller
         $ip_address = md5($this->request->getIPAddress());
         $dataIPAddress = $ipblocked->where('ip_address', $ip_address)->first();
         if ($dataIPAddress) {
-
             if ($dataIPAddress['blocked_time'] >= date('Y-m-d H:i:s')) {
                 if ($dataIPAddress['times'] == 1) {
                     $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
@@ -91,7 +89,6 @@ class Admin extends Controller
             }
         }
         if ($throttler->check($ip_address, 5, 60 * 5) === false) {
-
             if ($dataIPAddress) {
                 $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
                 $dataIPAddress['blocked_time'] = date('Y-m-d H:i:s', strtotime('+5 min'));

@@ -186,7 +186,7 @@ class Panitia extends Controller
         $ketua = $this->request->getVar("edit_ketua_calon");
         $wakil = $this->request->getVar("edit_wakil_calon");
         if ($wakil == "") $wakil = NULL;
-        $foto = $_FILES['edit_foto_calon']['tmp_name'];
+
         $pesan = $this->request->getVar("edit_pesan_calon");
         $event = $this->request->getVar("edit_event_calon");
         $panitia = new PanitiaModel();
@@ -198,7 +198,8 @@ class Panitia extends Controller
             'panitia' => $panitia_data['kode_panitia']
         );
         $calon_data = $calon->where('kode_calon', $kode)->first();
-        if (is_image($foto)) {
+        if (file_exists($_FILES['edit_foto_calon']['tmp_name']) && is_uploaded_file($_FILES['edit_foto_calon']['tmp_name'])) {
+            $foto = $_FILES['edit_foto_calon']['tmp_name'];
             $foto_id = gdupload($foto, $kode);
             $data['foto_calon'] = $foto_id;
             gddelete($calon_data['foto_calon']);

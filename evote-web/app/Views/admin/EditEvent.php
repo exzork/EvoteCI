@@ -15,7 +15,7 @@
                     <div class="col-md-9 offset-md-3">
                         <div class="p-2">
                             <label>Foto Lama</label>
-                            <img class="img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $event_data['foto_event']; ?>" alt="">
+                            <img class="img-fluid d-block" src="https://lh3.googleusercontent.com/d/<?php echo $event_data['foto_event']; ?>" alt="">
                         </div>
                     </div>
                     <div class="col-md-3">Foto</div>

@@ -62,6 +62,11 @@
                     <script>
                         $.trumbowyg.svgPath = "/simeditor/icons.svg"
                         $('#add_deskripsi_event').trumbowyg();
+
+                        function show_modal_event() {
+                            $('#add_event_modal').modal('show');
+                            $('#add_deskripsi_event').trumbowyg();
+                        }
                     </script>
                     <style>
                         table {
@@ -116,6 +121,9 @@
 
                         function ajaxt_error() {
                             alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+                            if (!$(".loader").hasClass('hidden')) {
+                                $(".loader").addClass('hidden');
+                            }
                         }
 
 
