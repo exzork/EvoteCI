@@ -120,6 +120,13 @@
         "scrollX": true,
         "ordering": false
     });
+
+    // Pesan error
+    function ajaxt_error() {
+        alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+    }
+
+
     //calon
     function check_ketua(npm = "0") {
         if (npm == "") npm = "0";
@@ -184,6 +191,12 @@
                         "ordering": false
                     });
                 });
+            },
+            error: function() {
+                $("#submit_add_calon").removeClass("disabled");
+                $(".loader").addClass('hidden');
+                $(".modal").modal('hide');
+                ajaxt_error();
             }
         });
     }
@@ -232,6 +245,11 @@
                         "ordering": false
                     });
                 });
+            },
+            error: function() {
+                $("#submit_edit_calon").removeClass("disabled");
+                $(".modal").modal('hide');
+                ajaxt_error()
             }
         });
     }
@@ -325,6 +343,11 @@
                     $("#main-content").html(data);
                     $(".loader").addClass('hidden');
                 });
+            },
+            error: function() {
+                $(".loader").addClass('hidden');
+                $(".modal").modal('hide');
+                ajaxt_error();
             }
         });
     }

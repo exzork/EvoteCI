@@ -114,6 +114,10 @@
                         });
                         //event
 
+                        function ajaxt_error() {
+                            alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+                        }
+
 
                         function add_event() {
                             var form = $("#add_event").closest("form");
@@ -137,6 +141,12 @@
                                         dp();
                                     });
                                 },
+                                error: function() {
+                                    $("#btnadd_event").attr("disabled", false);
+                                    $(".loader").addClass('hidden');
+                                    $("#add_event_modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -211,8 +221,10 @@
                                     });
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
-                                    alert(xhr.status);
-                                    alert(thrownError);
+                                    $(".loader").addClass('hidden');
+                                    $("#btnedit_event").attr("disabled", false);
+                                    $("#edit_event_modal").modal('hide');
+                                    ajaxt_error();
                                 }
                             });
                         }
@@ -322,6 +334,11 @@
                                         });
                                     });
                                 },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -363,6 +380,11 @@
                                         });
                                     });
                                 },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -424,7 +446,8 @@
                                 },
                                 error: function(data) {
                                     $(".loader").addClass('hidden');
-                                    alert_change('error', 'Terjadi kesalahan, coba lagi!');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
                                 }
                             });
                         }
