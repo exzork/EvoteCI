@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Models\EventModel;
+use App\Models\IPBlockedModel;
 use App\Models\PanitiaModel;
 use App\Models\RekapModel;
+use App\Models\TokenModel;
 use CodeIgniter\Controller;
 use App\Models\UserModel;
 use DateTime;
@@ -15,14 +17,18 @@ use PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerPHPMailer;
-
+use Config\Services;
 use function GuzzleHttp\json_decode;
 
 class User extends Controller
 {
+    // Ganti tema sesuai yang diiingin (default: '')
+    private $theme = 'v2';
+
     public function index()
     {
-        echo view('user/Sign');
+        $data['youtube'] =  getenv("ID_YOUTUBE");
+        echo view($this->theme . '/user/Sign', $data);
     }
 
     public function daftar()
@@ -58,13 +64,13 @@ class User extends Controller
                 $mhs = explode(',', $value->text);
                 #$url = $value->website_link;
                 $check_upn = strpos($mhs[1], 'PT : UNIVERSITAS PEMBANGUNAN NASIONAL VETERAN JAWA TIMUR');
-                $check_if = strpos($mhs[2],'Prodi: INFORMATIKA');
-                $check_if2 =strpos($mhs[2],'Prodi: TEKNIK INFORMATIKA');
-                if ($check_upn !== false&&($check_if!==false||$check_if2!==false)) {
-                    $mhs_upn =  preg_replace('/\s+/', ' ',$value->text);
+                $check_if = strpos($mhs[2], 'Prodi: INFORMATIKA');
+                $check_if2 = strpos($mhs[2], 'Prodi: TEKNIK INFORMATIKA');
+                if ($check_upn !== false && ($check_if !== false || $check_if2 !== false)) {
+                    $mhs_upn =  preg_replace('/\s+/', ' ', $value->text);
                 }
             }
-            if($mhs_upn==""){
+            if ($mhs_upn == "") {
                 $session->setFlashdata('msg', "Pastikan NPM anda terdaftar sebagai mahasiswa UPN 'Veteran' Jawa Timur di prodi Informatika, silahkan cek di dikti. Masukkan NPM pada kolom pencarian di <a target='_blank' href='https://pddikti.kemdikbud.go.id/data_mahasiswa'>kemdikbud</a>");
                 return redirect()->to(base_url('user'));
             }
@@ -72,7 +78,7 @@ class User extends Controller
             $name_check = $this->request->getVar('nama'); #str_replace($single_quote,"",$this->request->getVar('nama'));
             $response = explode(',', $mhs_upn);
             if (strtolower($response[0]) != strtolower($name_check) . "(" . $this->request->getVar('npm') . ")") {
-                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/". $this->request->getVar('npm')."'>disini</a>");
+                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/" . $this->request->getVar('npm') . "'>disini</a>");
                 return redirect()->to(base_url('user'));
             }
             helper("text");
@@ -93,10 +99,10 @@ class User extends Controller
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Temporary Password');
             $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
-            $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass.$email_str);
+            $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
-                $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled'>Kirim Ulang (01:00)</a>");
+                $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<br><a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled mt-1'>Kirim Ulang (01:00)</a>");
                 return redirect()->to(base_url('user'));
             } else {
                 $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
@@ -105,13 +111,199 @@ class User extends Controller
             }
         } else {
             $data['validation'] = $this->validator;
-            return view('user/Sign', $data);
+            $data['youtube'] =  getenv("ID_YOUTUBE");
+            return view($this->theme . '/user/Sign', $data);
+        }
+    }
+
+    public function changeForget($token)
+    {
+        $session = session();
+        $tokenModel = new TokenModel();
+        $data = $tokenModel->where('token', $token)->first();
+
+        if ($this->request->getMethod() == "post") {
+
+            helper(['form']);
+            $rules = [
+                'new_pass' => [
+                    'rules' => 'required|min_length[8]|matches[confirm_new_pass]',
+                    'errors' => [
+                        'required' => "Password tidak boleh dikosongi.",
+                        'min_length' => "Password minimal 8 karakter.",
+                        'matches' => "Password tidak sama dengan konfirmasi password."
+                    ]
+                ],
+                'confirm_new_pass' => [
+                    'rules' => 'required',
+                    'errors' => [
+
+                        'required' => "Harap isi konfirmasi password"
+                    ]
+                ],
+                'token_data' => [
+                    'rules' => 'required',
+                    'errors' => [
+
+                        'required' => "Token tidak ditemukan"
+                    ]
+                ]
+            ];
+
+            if ($this->validate($rules)) {
+
+                $data = $tokenModel->where('token', $token)->first();
+                if ($data) {
+                    $user = new UserModel();
+                    $user_data = $user->where('email_user', $data['email'])->first();
+                    // Ubah passowrd
+                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->update();
+                    // Hapus token
+                    $tokenModel->where('token', $token)->delete();
+                    $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
+                    return redirect()->to(base_url('user'));
+                } else {
+                    $session->setFlashdata('msg', "Token tidak ditemukan");
+                    return redirect()->to(base_url('user'));
+                }
+            } else {
+                if ($token) {
+                    $data['token'] = $token;
+                    $data['validation'] = $this->validator;
+                    return view($this->theme . '/user/ForgotPass', $data);
+                } else {
+                    $session->setFlashdata('msg', "Token tidak ditemukan");
+                    return redirect()->to(base_url('user'));
+                }
+            }
+        }
+        if ($data) {
+            if ($data['status'] == 0) {
+                return view($this->theme . '/user/ForgotPass', $data);
+            }
+            $session->setFlashdata('msg', "Token expired harap minta lagi");
+        }
+
+        return redirect()->to(base_url('user'));
+    }
+
+    public function formForget()
+    {
+        $session = session();
+        $tokenModel = new TokenModel();
+        helper(['form']);
+        $rules = [
+            'new_pass' => [
+                'rules' => 'required|min_length[8]|matches[confirm_new_pass]',
+                'errors' => [
+                    'required' => "Password tidak boleh dikosongi.",
+                    'min_length' => "Password minimal 8 karakter.",
+                    'matches' => "Password tidak sama dengan konfirmasi password."
+                ]
+            ],
+            'confirm_new_pass' => [
+                'rules' => 'required',
+                'errors' => [
+
+                    'required' => "Harap isi konfirmasi password"
+                ]
+            ],
+            'token' => [
+                'rules' => 'required',
+                'errors' => [
+
+                    'required' => "Token tidak ditemukan"
+                ]
+            ]
+        ];
+        $token = $this->request->getVar("token");
+        if ($this->validate($rules)) {
+
+            $data = $tokenModel->where('token', $token)->first();
+            if ($data) {
+                $user = new UserModel();
+                $user_data = $user->where('email_user', $data['email'])->first();
+                // Ubah passowrd
+                $user->update($user_data['npm'], ['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)]);
+                // Hapus token
+                $tokenModel->where('token', $token)->delete();
+                $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
+                return redirect()->to(base_url('user'));
+            } else {
+                $session->setFlashdata('msg', "Token tidak ditemukan");
+                return redirect()->to(base_url('user'));
+            }
+        } else {
+            if ($token) {
+                $data['token'] = $token;
+                $data['validation'] = $this->validator;
+                return view($this->theme . '/user/ForgotPass', $data);
+            } else {
+                $session->setFlashdata('msg', "Token tidak ditemukan");
+                return redirect()->to(base_url('user'));
+            }
+        }
+    }
+
+    //ganti post
+    public function forgot($email_to)
+    {
+
+        $session = session();
+        $ip_address = md5($this->request->getIPAddress());
+        $throttler = Services::throttler();
+        if ($throttler->check($ip_address, 5, 60) === false) {
+            $session->setFlashdata('msg', "Anda terlalu banyak mencoba merubah password. Silahkan coba lagi nanti.");
+            return redirect()->to(base_url("user"));
+        }
+
+
+        $user = new UserModel();
+        $tokenModel = new TokenModel();
+        if ($tokenModel->where('email', $email_to)->where('status', 0)->first()) {
+            $session->setFlashdata('msg', "Penggantian password telah diajukan sebelumnya harap check email atau spam");
+            return redirect()->to(base_url('user'));
+        }
+        $data_user = $user->where('email_user', $email_to)->first();
+        if ($data_user) {
+            helper("text");
+            $token = date("YmdHis") . random_string("alnum", 8);
+            $email = \Config\Services::email();
+            $main_email = getenv("EMAIL_SENDER");
+            $email->setTo($email_to);
+            $email->setFrom($main_email, "Admin Evote IF");
+            $email->setReplyTo($main_email, "Admin Evote IF");
+            $email->setSubject('Lupa Password');
+            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Rubah Password</a>");
+
+            if ($email->send()) {
+                $token_data = [
+                    'email' => $email_to,
+                    'token' => $token,
+
+                ];
+                $tokenModel->insert($token_data);
+                $session->setFlashdata('msg', "Berhasil mengirim link merubah password email, Cek password di email " . $email_to . "");
+                return redirect()->to(base_url('user'));
+            } else {
+                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
+                return redirect()->to(base_url('user'));
+            }
+        } else {
+            $session->setFlashdata('msg', "Akun tidak ditemukan");
+            return redirect()->to(base_url('user'));
         }
     }
 
     public function resend($email_to)
     {
         $session = session();
+        $ip_address = md5($this->request->getIPAddress());
+        $throttler = Services::throttler();
+        if ($throttler->check($ip_address, 5, 60) === false) {
+            $session->setFlashdata('msg', "Anda terlalu banyak mencoba merubah password. Silahkan coba lagi nanti.");
+            return redirect()->to(base_url("user"));
+        }
         $user = new UserModel();
         $data_user = $user->where('email_user', $email_to)->first();
         if ($data_user) {
@@ -146,9 +338,47 @@ class User extends Controller
         }
     }
 
+
+
     public function masuk()
     {
         $session = session();
+
+        // cek throttler mencegah bruteforce
+        $throttler = Services::throttler();
+        $ipblocked =  new IPBlockedModel();
+        $ip_address = md5($this->request->getIPAddress());
+        $dataIPAddress = $ipblocked->where('ip_address', $ip_address)->first();
+
+        if ($dataIPAddress) {
+
+            if ($dataIPAddress['blocked_time'] >= date('Y-m-d H:i:s')) {
+                if ($dataIPAddress['times'] == 1) {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                } else {
+                    $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                }
+                return redirect()->to(base_url("user"));
+            }
+        }
+        if ($throttler->check($ip_address, 5, 60 * 5) === false) {
+
+            if ($dataIPAddress) {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 5 menit lagi');
+                $dataIPAddress['blocked_time'] = date('Y-m-d H:i:s', strtotime('+5 min'));
+                $dataIPAddress['times'] = 2;
+                $ipblocked->update($ip_address, $dataIPAddress);
+            } else {
+                $session->setFlashdata('msg', 'Anda terlalu banyak mencoba masuk, tunggu 1 menit lagi');
+                $ipblocked->insert([
+                    'ip_address' => $ip_address,
+                    'blocked_time' => date('Y-m-d H:i:s', strtotime("+1 min")),
+                    'times' => 1
+                ]);
+            }
+            return redirect()->to(base_url("user"));
+        }
+
         $user = new UserModel();
         $npm = $this->request->getVar('npm');
         $password = $this->request->getVar('password');
@@ -189,7 +419,6 @@ class User extends Controller
                         if ($db->tableExists('TEMP_' . $event['kode_event'])) {
                             $builder = $db->table('TEMP_' . $event['kode_event']);
                             $builder->where('npm', $npm)->delete();
-
                         }
                     }
                 }
@@ -257,7 +486,7 @@ class User extends Controller
         $data = [
             'event_data' => $events
         ];
-        echo view('user/Event', $data);
+        echo view($this->theme . '/user/Event', $data);
     }
 
     public function pilih_v($kode)
@@ -284,7 +513,7 @@ class User extends Controller
         $data_diff_pem = array_diff(array_column($data_pem, 'id'), array_column($data_temp, 'pem'));
         sort($data_diff_pem, SORT_NUMERIC);
         if (count($data_diff_pem) == 0 && !$data_rekap) {
-            echo view("user/Pilih", ['rekap' => 1, 'event' => $kode]);
+            echo view("v2/user/Pilih", ['rekap' => 1, 'event' => $kode]);
             return;
         }
         $pem = $data_diff_pem[0];
@@ -318,7 +547,7 @@ class User extends Controller
             if ($data_rekap)
                 return redirect()->to(base_url('user/event'));
             else
-                echo view("user/Pilih", $data);
+                echo view("v2/user/Pilih", $data);
         } else {
             return redirect()->to(base_url('user/event'));
         }
@@ -343,7 +572,7 @@ class User extends Controller
         $data_pem = $builder->where('id', $pem)->get()->getResultArray();
         if ($pem == 0) {
             $session->setFlashdata('rekap', '1');
-            echo view("user/uPilih", [
+            echo view("v2/user/uPilih", [
                 'rekap' => 1,
                 'event' => $kode
             ]);
@@ -380,7 +609,7 @@ class User extends Controller
             if ($data_rekap)
                 return redirect()->to(base_url('user/event'));
             else
-                echo view("user/uPilih", $data);
+                echo view("v2/user/uPilih", $data);
         } else {
             return redirect()->to(base_url('user/event'));
         }
@@ -528,7 +757,8 @@ class User extends Controller
 
     public function changepass_v()
     {
-        echo view('user/ChangePass');
+        $session = session();
+        echo view($this->theme . '/user/ChangePass');
     }
 
     public function changepass()
@@ -537,6 +767,7 @@ class User extends Controller
         $session = session();
         $old_pass = $this->request->getVar('old_pass');
         $new_pass = $this->request->getVar('new_pass');
+        $new_pass2 = $this->request->getVar('confirm_new_pass');
         $npm = $_SESSION['npm'];
         $user = new UserModel();
         $data = $user->where('npm', $npm)->first();
@@ -544,6 +775,13 @@ class User extends Controller
             $msg = [
                 'type' => 'error',
                 'msg' => 'Minimal panjang password adalah 8 karakter.'
+            ];
+            echo json_encode($msg);
+            return;
+        } else if ($new_pass != $new_pass2) {
+            $msg = [
+                'type' => 'error',
+                'msg' => 'Konfirmasi password tidak sama !!.'
             ];
             echo json_encode($msg);
             return;

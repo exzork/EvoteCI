@@ -16,7 +16,9 @@ class Filters extends BaseConfig
 		'authUserLog' => \App\Filters\AuthUserLog::class,
 		'authPanitia' => \App\Filters\AuthPanitia::class,
 		'authAdmin' => \App\Filters\AuthAdmin::class,
-		'authAdminLog' => \App\Filters\AuthAdminLog::class
+		'authAdminLog' => \App\Filters\AuthAdminLog::class,
+		'throttle' => \App\Filters\Throttle::class,
+
 	];
 
 	// Always applied before every request

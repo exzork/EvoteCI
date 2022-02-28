@@ -57,6 +57,24 @@
 <script src="<?php echo base_url('js/adminlte.js'); ?>"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?= base_url('simeditor/trumbowyg.min.js') ?>"></script>
+<script>
+    $.trumbowyg.svgPath = "/simeditor/icons.svg"
+    $('#add_pesan_calon').trumbowyg();
+
+    function show_add_calon() {
+        $('#add_calon_modal').modal('show');
+        $('#add_pesan_calon').trumbowyg();
+        //Ketika uncentang maka matikan npm nya
+        $("#use_wakil").on("change", function() {
+            if ($(this).is(":checked")) {
+                $("input[name='add_wakil_calon']").attr("readonly", false);
+            } else {
+                $("input[name='add_wakil_calon']").attr("readonly", true);
+            }
+        });
+    }
+</script>
 <style>
     table {
         table-layout: fixed;
@@ -78,11 +96,13 @@
     table.dataTable.no-footer {
         border-bottom: none;
     }
-    .verif-photo{
-        height: 200px!important;
+
+    .verif-photo {
+        height: 200px !important;
     }
-    .verif-ktm{
-        height: 150px!important;
+
+    .verif-ktm {
+        height: 150px !important;
     }
 </style>
 <script>
@@ -113,6 +133,16 @@
         "scrollX": true,
         "ordering": false
     });
+
+    // Pesan error
+    function ajaxt_error() {
+        alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+        if (!$(".loader").hasClass('hidden')) {
+            $(".loader").addClass('hidden');
+        }
+    }
+
+
     //calon
     function check_ketua(npm = "0") {
         if (npm == "") npm = "0";
@@ -143,7 +173,17 @@
 
     function add_calon() {
         var form = $("#add_calon").closest("form");
+        $("#submit_add_calon").addClass("disabled");
         var formData = new FormData(form[0]);
+        let npmWakil = formData.get("add_wakil_calon");
+        let useWakil = formData.get("use_wakil");
+        if (useWakil) {
+            if (npmWakil == "") {
+                alert_change("error", "NPM wakil tidak boleh kosong");
+                $("#submit_add_calon").removeClass("disabled");
+                return;
+            }
+        }
         $(".loader").removeClass('hidden');
         $.ajax({
             type: 'POST',
@@ -153,6 +193,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
+                $("#submit_add_calon").removeClass("disabled");
                 $(".loader").addClass('hidden');
                 $(".modal").modal('hide');
                 alert_change(data['type'], data['msg']);
@@ -166,6 +207,12 @@
                         "ordering": false
                     });
                 });
+            },
+            error: function() {
+                $("#submit_add_calon").removeClass("disabled");
+                $(".loader").addClass('hidden');
+                $(".modal").modal('hide');
+                ajaxt_error();
             }
         });
     }
@@ -173,8 +220,18 @@
     function edit_calon(kode) {
         $(".loader").removeClass('hidden');
         $.get("<?php echo base_url('panitia/edit_calon_v'); ?>/" + kode, function(data) {
+
             $(".loader").addClass('hidden');
             $("#edit_calon_modal").html(data);
+            try {
+
+                //tambahkan editor biar lebih efisien
+                $('#edit_pesan_calon').trumbowyg();
+
+            } catch (e) {
+                console.log(e);
+            }
+
             $("#edit_calon_modal").modal('show');
         });
     }
@@ -182,6 +239,7 @@
     function edit_save_calon(kode) {
         var form = $("#edit_calon").closest("form");
         var formData = new FormData(form[0]);
+        $("#submit_edit_calon").addClass("disabled");
         $(".loader").removeClass('hidden');
         $.ajax({
             type: 'POST',
@@ -191,6 +249,7 @@
             processData: false,
             contentType: false,
             success: function(data) {
+                $("#submit_edit_calon").removeClass("disabled");
                 $(".modal").modal('hide');
                 alert_change(data['type'], data['msg']);
                 $(".loader").addClass('hidden');
@@ -202,6 +261,11 @@
                         "ordering": false
                     });
                 });
+            },
+            error: function() {
+                $("#submit_edit_calon").removeClass("disabled");
+                $(".modal").modal('hide');
+                ajaxt_error()
             }
         });
     }
@@ -295,6 +359,11 @@
                     $("#main-content").html(data);
                     $(".loader").addClass('hidden');
                 });
+            },
+            error: function() {
+                $(".loader").addClass('hidden');
+                $(".modal").modal('hide');
+                ajaxt_error();
             }
         });
     }

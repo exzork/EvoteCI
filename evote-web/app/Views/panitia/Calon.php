@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('simeditor/trumbowyg.min.css') ?>" />
 <table class="table table-bordered table-datatable" id="calon_table">
     <thead>
         <tr>
@@ -16,7 +17,7 @@
                 <td><?php echo $calon['kode_calon']; ?></td>
                 <td><?php echo $calon['nama_ketua']; ?><br><?php echo $calon['npm_ketua']; ?></td>
                 <td><?php echo $calon['nama_wakil']; ?><br><?php echo $calon['npm_wakil']; ?></td>
-                <td><img class="img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt=""> </td>
+                <td><img class="img-fluid" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt=""> </td>
                 <td><?php echo $calon['pesan']; ?></td>
                 <td><?php echo $calon['nama_panitia']; ?></td>
                 <td>
@@ -27,7 +28,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="$('#add_calon_modal').modal('show');">Tambah Calon</button>
+<button class="btn btn-success" onclick="show_add_calon()">Tambah Calon</button>
 <div class="modal" id="add_calon_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -48,7 +49,7 @@
                         <div class="col-md-9 input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
-                                    <input type="checkbox" name="use_wakil" checked>
+                                    <input type="checkbox" name="use_wakil" id="use_wakil" checked>
                                 </div>
                             </div>
                             <input type="text" class="form-control" placeholder="NPM" name="add_wakil_calon" oninput="check_wakil($(this).val());">
@@ -65,15 +66,18 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-md-3">Pesan</div>
-                        <div class="col-md-9"><textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15" ></textarea></div>
+                        <div class="col-md-12">Pesan</div>
+                        <div class="col-md-12">
+                            <textarea name="add_pesan_calon" id="add_pesan_calon" class="form-control" rows="15"></textarea>
+
+                        </div>
                     </div>
                     <input type="hidden" name="add_event_calon" value="<?php echo $event; ?>">
                     <input type="hidden" name="add_pem_calon" value="<?php echo $pem; ?>">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="add_calon();">Tambahkan</button>
+                <button type="button" class="btn btn-success" id="submit_add_calon" onclick="add_calon();">Tambahkan</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
             </div>
         </div>

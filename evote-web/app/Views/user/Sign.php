@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar ke Evote IF</title>
-    <link rel="icon" href="https://lh3.googleusercontent.com/d/17-um7KYZG3GUala7hr8cg1xpdpNWXRT5">
+    <link rel="icon" href="<?php echo base_url('img/favicon.ico'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
     <script src="<?php echo base_url('js/bootstrap.min.js'); ?>"></script>
     <link rel="stylesheet" href="<?php echo base_url('css/bootstrap.min.css'); ?>">
@@ -28,7 +28,7 @@
 
                 <div class="col-sm-6 form">
                     <div class="login form-peice ">
-                        <form class="login-form" action="<?php echo base_url('user/masuk');?>" method="post">
+                        <form class="login-form" action="<?php echo base_url('user/masuk'); ?>" method="post">
                             <?php if (isset($validation)) : ?>
                                 <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                             <?php endif; ?>
@@ -50,7 +50,7 @@
                         </form>
                     </div>
                     <div class="signup form-peice switched">
-                        <form class="signup-form" id="form_signup" action="<?php echo base_url('user/daftar');?>" method="post">
+                        <form class="signup-form" id="form_signup" action="<?php echo base_url('user/daftar'); ?>" method="post">
                             <?php if (isset($validation)) : ?>
                                 <div class="alert alert-danger"><?= $validation->listErrors() ?></div>
                             <?php endif; ?>
@@ -106,17 +106,16 @@
                     <input type="text" maxlength="11" id="npmResendEmail">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" onclick="window.location='<?php echo base_url('user/resend/')?>/'+$('#npmResendEmail').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
+                    <button class="btn btn-success" onclick="window.location='<?php echo base_url('user/resend/') ?>/'+$('#npmResendEmail').val()+'@student.upnjatim.ac.id';">Kirim ulang.</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-
         /*global $, document, window, setTimeout, navigator, console, location*/
         $(document).ready(function() {
             $(window).scrollTo($("#alertDiv"));
-            if($("#resend_email").length>0){
+            if ($("#resend_email").length > 0) {
                 let timer2 = $("#resend_email").html().match(/\((.*)\)/)[1];
                 let interval = setInterval(function() {
                     let timer = timer2.split(':');
@@ -129,12 +128,12 @@
                     seconds = (seconds < 0) ? 59 : seconds;
                     seconds = (seconds < 10) ? '0' + seconds : seconds;
                     //minutes = (minutes < 10) ?  minutes : minutes;
-                    if(minutes <= 0&&seconds<=0){
+                    if (minutes <= 0 && seconds <= 0) {
                         $("#resend_email").removeClass('disabled');
                         $('#resend_email').html('Kirim Ulang');
                         clearInterval(interval);
-                    }else{
-                        $('#resend_email').html('Kirim Ulang ('+minutes + ':' + seconds+')');
+                    } else {
+                        $('#resend_email').html('Kirim Ulang (' + minutes + ':' + seconds + ')');
                         timer2 = minutes + ':' + seconds;
                     }
                 }, 1000);
@@ -194,11 +193,13 @@
             font-family: "Montserrat", sans-serif;
             background: #f7edd5;
         }
+
         .disabled {
             pointer-events: none;
             cursor: default;
         }
-         .container {
+
+        .container {
             max-width: 900px;
         }
 
@@ -230,7 +231,7 @@
             color: #fff;
             min-height: 540px;
             position: relative;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0,0.3);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.6s cubic-bezier(1, -0.375, 0.285, 0.995);
             z-index: 1;
         }

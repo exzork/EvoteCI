@@ -20,6 +20,12 @@
                     </div>
                 </div>
                 <div class="row mt-2">
+                    <div class="col-md-9 offset-md-3">
+                        <div class="p-3">
+                            <label>Foto Lama</label>
+                            <img class="img-fluid d-block" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/d/<?php echo $data_calon[0]['foto_calon']; ?>" alt="">
+                        </div>
+                    </div>
                     <div class="col-md-3">Foto</div>
                     <div class="col-md-9">
                         <div class="custom-file">
@@ -30,13 +36,13 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-3">Pesan</div>
-                    <div class="col-md-9"><textarea name="edit_pesan_calon" id="edit_pesan_calon" class="form-control" rows="15" ><?php echo $data_calon[0]['pesan']; ?></textarea></div>
+                    <div class="col-md-9"><textarea name="edit_pesan_calon" id="edit_pesan_calon" class="form-control" rows="15"><?php echo $data_calon[0]['pesan']; ?></textarea></div>
                 </div>
                 <input type="hidden" name="edit_event_calon" value="<?php echo $data_calon[0]['event']; ?>">
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" onclick="edit_save_calon('<?php echo $data_calon[0]['kode_calon']; ?>');">Simpan</button>
+            <button type="button" class="btn btn-success" id="submit_edit_calon" onclick="edit_save_calon('<?php echo $data_calon[0]['kode_calon']; ?>');">Simpan</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
         </div>
     </div>

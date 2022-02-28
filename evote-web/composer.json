@@ -4,6 +4,11 @@
 	"description": "The CodeIgniter framework v4",
 	"homepage": "https://codeigniter.com",
 	"license": "MIT",
+	"config": {
+
+		"platform-check": false
+	},
+	
 	"require": {
 		"php": ">=7.2",
 		"ext-curl": "*",
@@ -17,7 +22,8 @@
 		"paragonie/random-lib": "^2.0",
 		"tatter/assets": "^2.2",
 		"google/apiclient": "2.4.1",
-		"vlucas/phpdotenv": "*"
+		"vlucas/phpdotenv": "*",
+		"natanfelles/codeigniter-db": "^1.0"
 	},
 	"require-dev": {
 		"codeigniter4/codeigniter4-standard": "^1.0",

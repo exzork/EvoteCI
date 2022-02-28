@@ -51,6 +51,7 @@
                     </style>
                     <div class="loader hidden"></div>
                     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
+                    <script type="text/javascript" src="<?= base_url('simeditor/trumbowyg.min.js') ?>"></script>
                     <script src="<?php echo base_url('js/bootstrap.bundle.min.js'); ?>"></script>
                     <script src="<?php echo base_url('js/moment.js'); ?>"></script>
                     <script src="<?php echo base_url('js/id.js'); ?>"></script>
@@ -58,6 +59,15 @@
                     <script src="<?php echo base_url('js/adminlte.js'); ?>"></script>
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
                     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+                    <script>
+                        $.trumbowyg.svgPath = "/simeditor/icons.svg"
+                        $('#add_deskripsi_event').trumbowyg();
+
+                        function show_modal_event() {
+                            $('#add_event_modal').modal('show');
+                            $('#add_deskripsi_event').trumbowyg();
+                        }
+                    </script>
                     <style>
                         table {
                             table-layout: fixed;
@@ -109,11 +119,19 @@
                         });
                         //event
 
+                        function ajaxt_error() {
+                            alert_change('error', 'Terjadi kesalahan, coba lagi nanti');
+                            if (!$(".loader").hasClass('hidden')) {
+                                $(".loader").addClass('hidden');
+                            }
+                        }
+
 
                         function add_event() {
                             var form = $("#add_event").closest("form");
                             var formData = new FormData(form[0]);
                             $(".loader").removeClass('hidden');
+                            $("#btnadd_event").attr("disabled", true);
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo base_url('admin/add_event'); ?>',
@@ -122,14 +140,21 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#btnadd_event").attr("disabled", false);
                                     $(".loader").addClass('hidden');
-                                    $(".modal").modal('hide');
+                                    $("#add_event_modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
                                     $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {
                                         $("#main-content").html(data);
                                         dp();
                                     });
                                 },
+                                error: function() {
+                                    $("#btnadd_event").attr("disabled", false);
+                                    $(".loader").addClass('hidden');
+                                    $("#add_event_modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -137,6 +162,11 @@
                             $(".loader").removeClass('hidden');
                             $.get('<?php echo base_url('admin/edit_event_v'); ?>/' + kode, function(data) {
                                 $("#edit_event_modal").html(data);
+                                try {
+                                    $('#edit_deskripsi_event').trumbowyg();
+                                } catch (e) {
+
+                                }
                                 $(".loader").addClass('hidden');
                                 $("#edit_event_modal").modal('show');
                                 $("#edit_mulai_event").datetimepicker({
@@ -174,6 +204,7 @@
                             var form = $("#edit_event").closest("form");
                             var formData = new FormData(form[0]);
                             $(".loader").removeClass('hidden');
+                            $("#btnedit_event").attr("disabled", true);
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo base_url('admin/edit_event'); ?>/' + kode,
@@ -183,7 +214,8 @@
                                 contentType: false,
                                 success: function(data) {
                                     $(".loader").addClass('hidden');
-                                    $(".modal").modal('hide');
+                                    $("#btnedit_event").attr("disabled", false);
+                                    $("#edit_event_modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
                                     $(".loader").removeClass('hidden');
                                     $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {
@@ -196,6 +228,12 @@
                                         dp();
                                     });
                                 },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                    $(".loader").addClass('hidden');
+                                    $("#btnedit_event").attr("disabled", false);
+                                    $("#edit_event_modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -218,7 +256,8 @@
                                         $(".loader").removeClass('hidden');
                                         $.get("<?php echo base_url('admin/get_event'); ?>", function(data) {
                                             $(".loader").addClass('hidden');
-                                            $("#main-content").html(data);$(".table-datatable").DataTable({
+                                            $("#main-content").html(data);
+                                            $(".table-datatable").DataTable({
                                                 "autoWidth": false,
                                                 "scrollX": true
                                             });
@@ -303,6 +342,11 @@
                                         });
                                     });
                                 },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -344,6 +388,11 @@
                                         });
                                     });
                                 },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 
@@ -389,6 +438,7 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    console.log(data);
                                     $(".loader").addClass('hidden');
                                     $(".modal").modal('hide');
                                     alert_change(data['type'], data['msg']);
@@ -402,6 +452,11 @@
                                         });
                                     });
                                 },
+                                error: function(data) {
+                                    $(".loader").addClass('hidden');
+                                    $(".modal").modal('hide');
+                                    ajaxt_error();
+                                }
                             });
                         }
 

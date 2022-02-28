@@ -1,3 +1,7 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('simeditor/trumbowyg.min.css') ?>" />
+
+
+
 <table class="table table-bordered table-datatable" id="event_table">
     <thead>
         <tr>
@@ -21,7 +25,7 @@
                 <td><img class="img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $event->foto_event; ?>" alt=""> </td>
                 <td><?php echo $event->waktu_mulai; ?></td>
                 <td><?php echo $event->waktu_selesai; ?></td>
-                <td><?php echo $event->rek_count."/".$event->dp_count; ?></td>
+                <td><?php echo $event->rek_count . "/" . $event->dp_count; ?></td>
                 <td><?php echo $event->username_admin; ?></td>
                 <td>
                     <button class="btn btn-warning mt-2" onclick="edit_event('<?php echo $event->kode_event; ?>');">
@@ -36,7 +40,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="$('#add_event_modal').modal('show');">Tambah Event</button>
+<button class="btn btn-success" onclick="show_modal_event()">Tambah Event</button>
 <div class="modal" id="add_event_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -51,7 +55,7 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-3">Deskripsi</div>
-                        <div class="col-md-9"><textarea name="add_deskripsi_event" id="add_deskripsi_event" class="form-control" ></textarea></div>
+                        <div class="col-md-9"><textarea name="add_deskripsi_event" id="add_deskripsi_event" class="form-control"></textarea></div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-3">Foto</div>
@@ -91,7 +95,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="add_event();">Tambahkan</button>
+                <button type="button" class="btn btn-success" id="btnadd_event" onclick="add_event();">Tambahkan</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
             </div>
         </div>

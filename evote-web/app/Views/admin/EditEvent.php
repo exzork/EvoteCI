@@ -12,6 +12,12 @@
                     <div class="col-md-9"><textarea name="edit_deskripsi_event" id="edit_deskripsi_event" class="form-control"><?php echo $event_data['deskripsi'];  ?></textarea></div>
                 </div>
                 <div class="row mt-2">
+                    <div class="col-md-9 offset-md-3">
+                        <div class="p-2">
+                            <label>Foto Lama</label>
+                            <img class="img-fluid d-block" src="https://lh3.googleusercontent.com/d/<?php echo $event_data['foto_event']; ?>" alt="">
+                        </div>
+                    </div>
                     <div class="col-md-3">Foto</div>
                     <div class="col-md-9">
                         <div class="custom-file">
@@ -49,7 +55,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" onclick="edit_event_save('<?php echo $event_data['kode_event'];  ?>');">Simpan</button>
+            <button type="button" id="btnedit_event" class="btn btn-success" onclick="edit_event_save('<?php echo $event_data['kode_event'];  ?>');">Simpan</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('.modal').modal('hide');">Close</button>
         </div>
     </div>

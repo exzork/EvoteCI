@@ -128,7 +128,7 @@ class Panitia extends Controller
         $pesan = $this->request->getVar("add_pesan_calon");
         $panitia = new PanitiaModel();
         $panitia_data = $panitia->where('event', $event)->where('npm_panitia', $_SESSION['npm'])->first();
-        if (is_image($foto)>0) {
+        if (is_image($foto) > 0) {
             if ($foto_id = gdupload($foto, $new_kode_calon)) {
                 $data = array(
                     'kode_calon' => $new_kode_calon,
@@ -150,7 +150,7 @@ class Panitia extends Controller
                         'type' => "error"
                     );
                 }
-            }else {
+            } else {
                 $msg = array(
                     'msg' => "Terjadi kesalahan saat upload foto.",
                     'type' => "error"
@@ -186,7 +186,7 @@ class Panitia extends Controller
         $ketua = $this->request->getVar("edit_ketua_calon");
         $wakil = $this->request->getVar("edit_wakil_calon");
         if ($wakil == "") $wakil = NULL;
-        $foto = $_FILES['edit_foto_calon']['tmp_name'];
+
         $pesan = $this->request->getVar("edit_pesan_calon");
         $event = $this->request->getVar("edit_event_calon");
         $panitia = new PanitiaModel();
@@ -198,7 +198,8 @@ class Panitia extends Controller
             'panitia' => $panitia_data['kode_panitia']
         );
         $calon_data = $calon->where('kode_calon', $kode)->first();
-        if (is_image($foto)) {
+        if (file_exists($_FILES['edit_foto_calon']['tmp_name']) && is_uploaded_file($_FILES['edit_foto_calon']['tmp_name'])) {
+            $foto = $_FILES['edit_foto_calon']['tmp_name'];
             $foto_id = gdupload($foto, $kode);
             $data['foto_calon'] = $foto_id;
             gddelete($calon_data['foto_calon']);
@@ -409,15 +410,16 @@ class Panitia extends Controller
         $this->get_pemilih($kode);
         echo view("panitia/PanelBot");
     }
-    public  function  send_pemilih($npm){
+    public  function  send_pemilih($npm)
+    {
         $db = \Config\Database::connect();
         $builder = $db->table('user');
         $builder->select("nama_user");
         $builder->where("npm", $npm);
         $data = $builder->get()->getResultArray();
-        if(count($data)>0){
+        if (count($data) > 0) {
             echo 0;
-        }else{
+        } else {
             $ch = curl_init('https://api-frontend.kemdikbud.go.id/hit_mhs/' . $npm);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -429,17 +431,17 @@ class Panitia extends Controller
             foreach ($response->mahasiswa as $key => $value) {
                 $mhs = explode(',', $value->text);
                 $check_upn = strpos($mhs[1], 'PT : UNIVERSITAS PEMBANGUNAN NASIONAL VETERAN JAWA TIMUR');
-                $check_if = strpos($mhs[2],'Prodi: INFORMATIKA');
-                $check_if2 =strpos($mhs[2],'Prodi: TEKNIK INFORMATIKA');
-                if ($check_upn !== false&&($check_if!==false||$check_if2!==false)) {
-                    $mhs_upn =  preg_replace('/\s+/', ' ',$value->text);
+                $check_if = strpos($mhs[2], 'Prodi: INFORMATIKA');
+                $check_if2 = strpos($mhs[2], 'Prodi: TEKNIK INFORMATIKA');
+                if ($check_upn !== false && ($check_if !== false || $check_if2 !== false)) {
+                    $mhs_upn =  preg_replace('/\s+/', ' ', $value->text);
                 }
             }
             //echo $mhs_upn;
-            $result=explode('(',$mhs_upn);
+            $result = explode('(', $mhs_upn);
             $nama = ucwords(strtolower($result[0]));
             helper(['form', 'text']);
-            $email_to = $npm."@student.upnjatim.ac.id";
+            $email_to = $npm . "@student.upnjatim.ac.id";
             $onetime_pass = random_string("alnum", 8);
             $user = new UserModel();
             $data = [
@@ -453,7 +455,7 @@ class Panitia extends Controller
             $email->setFrom("admin@evote-if.xyz", "Admin Evote IF");
             $email->setReplyTo("admin@evote-if.xyz", "Admin Evote IF");
             $email->setSubject('PEMIRA INFORMATIKA 2021');
-            $email_str = '<p>PEMIRA INFORMATIKA 2021 sudah semakin dekat, pastikan suara anda digunakan sebaik mungkin pada pemilihannya yang dilaksanakan pada tanggal 1 Maret 2021 pukul 08.00 - 15.00 WIB yang dilakukan secara online di website <a href="https://evoteif.xyz" target="_blank" rel="noopener">evoteif.xyz</a> .</p><p>Bagi yang belum mendaftar per tanggal 28 Februari 2021 pukul 22.00 WIB.</p><p>Berikut password yang digunakan untuk login : '.$onetime_pass.'</p><p>Silakan login di <a href="https://evoteif.xyz" target="_blank" rel="noopener">evoteif.xyz</a>&nbsp; untuk melakukan pemilihan menggunakan NPM masing-masing dan password diatas</p><p>Untuk Info lebih lanjut mengenai cara memilih dan para calon silakan cek IG PEMIRA INFORMATIKA <a href="https://www.instagram.com/pemiraif2021/">@pemiraif2021</a> dan channel youtube <a href="https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA" target="_blank" rel="noopener">PEMIRA INFORMATIKA</a> (https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA)</p><p>jika ada kendala saat akses website silakan hubungi :<br />- CP Yanuar <br />Wa: 081233806275<br />Line: fitroni123</p><p>- CP Daffa <br />Wa: 087815584752<br />Line: ardidafa21</p>';
+            $email_str = '<p>PEMIRA INFORMATIKA 2021 sudah semakin dekat, pastikan suara anda digunakan sebaik mungkin pada pemilihannya yang dilaksanakan pada tanggal 1 Maret 2021 pukul 08.00 - 15.00 WIB yang dilakukan secara online di website <a href="https://evoteif.xyz" target="_blank" rel="noopener">evoteif.xyz</a> .</p><p>Bagi yang belum mendaftar per tanggal 28 Februari 2021 pukul 22.00 WIB.</p><p>Berikut password yang digunakan untuk login : ' . $onetime_pass . '</p><p>Silakan login di <a href="https://evoteif.xyz" target="_blank" rel="noopener">evoteif.xyz</a>&nbsp; untuk melakukan pemilihan menggunakan NPM masing-masing dan password diatas</p><p>Untuk Info lebih lanjut mengenai cara memilih dan para calon silakan cek IG PEMIRA INFORMATIKA <a href="https://www.instagram.com/pemiraif2021/">@pemiraif2021</a> dan channel youtube <a href="https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA" target="_blank" rel="noopener">PEMIRA INFORMATIKA</a> (https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA)</p><p>jika ada kendala saat akses website silakan hubungi :<br />- CP Yanuar <br />Wa: 081233806275<br />Line: fitroni123</p><p>- CP Daffa <br />Wa: 087815584752<br />Line: ardidafa21</p>';
             $email->setMessage($email_str);
             if ($email->send()) {
                 if ($user->save($data)) {
@@ -519,6 +521,18 @@ class Panitia extends Controller
         $builder->where('npm', $npm)->delete();
         $msg = [
             'msg' => "Berhasil menghapus " . $npm,
+            'type' => "success"
+        ];
+        echo json_encode($msg);
+    }
+
+    public function delete_all_pemilih($kode)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table("DP_" . $kode);
+        $builder->truncate();
+        $msg = [
+            'msg' => "Berhasil menghapus semua data",
             'type' => "success"
         ];
         echo json_encode($msg);
