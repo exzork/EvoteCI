@@ -29,7 +29,7 @@
 
 
 ## Pembuat
-1. Muhammad Eko - https://github.com/muhammadeko
+1. Muhammad Eko - https://github.com/exzork
 
 ## Pengembang
 1. Novandi Kevin Pratama - https://github.com/novandikp
