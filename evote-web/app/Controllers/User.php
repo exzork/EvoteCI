@@ -274,7 +274,7 @@ class User extends Controller
             $email->setFrom($main_email, "Admin Evote IF");
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Lupa Password');
-            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Rubah Password</a>");
+            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Ubah Password</a>");
 
             if ($email->send()) {
                 $token_data = [
