@@ -237,7 +237,7 @@
                     if ($('#pilih_ktm').get(0).files.length === 0) {
                         alert_change('error', 'Anda belum memilih file foto KTM');
                         return
-                    } else if ($('#pilih_ktm').get(0).files[0].size < 2097152) {
+                    } else if ($('#pilih_ktm').get(0).files[0].size > 2097152) {
                         alert_change('error', 'Harap upload file foto KTM berukuran di bawah 2 MB')
                         return
                     }
