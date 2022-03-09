@@ -183,8 +183,8 @@
                                 <h3><b>Foto Diri</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto diri dengan memegang KTM bagi angkatan 2016-2019<br>
-                                    - Foto Selfie saja bagi angkatan 2020<br>
+                                    - Foto diri dengan memegang KTM bagi angkatan 2018-2020<br>
+                                    - Foto Selfie saja bagi angkatan 2021<br>
                                     - Foto diri dengan memegang Transkrip bagi yang KTMnya hilang
                                 </b>
                             </div>
@@ -206,8 +206,8 @@
                                 <h3><b>File Foto KTM</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto KTM (Bagi angkatan 2016 - 2019)<br>
-                                    - Screenshot Transkrip (Bagi angkatan 2020)<br>
+                                    - Foto KTM (Bagi angkatan 2018 - 2020)<br>
+                                    - Screenshot Transkrip (Bagi angkatan 2021)<br>
                                     - Screenshot Transkrip (Bagi yang KTMnya hilang)
                                 </b>
                             </div>
