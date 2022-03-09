@@ -98,7 +98,7 @@ class User extends Controller
             $email->setFrom($main_email, "Admin Evote IF");
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Temporary Password');
-            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
+            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2022'>@pemiraif2022</a></p>";
             $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
