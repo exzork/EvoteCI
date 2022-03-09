@@ -11,8 +11,8 @@
     <!-- Page Title  -->
     <title>Login | E-Vote</title>
     <!-- StyleSheets  -->
-    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.0'); ?>">
-    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.1'); ?>">
+    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.1'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
 </head>
 
