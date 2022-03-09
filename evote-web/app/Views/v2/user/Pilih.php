@@ -301,31 +301,41 @@
                         canvas = document.getElementById('canvas');
                         photo = document.getElementById('photo');
                         startbutton = document.getElementById('startbutton');
-                        navigator.mediaDevices.getUserMedia({
-                                video: true,
-                                audio: false
-                            })
-                            .then(function(stream) {
-                                video.srcObject = stream;
-                                video.play();
-                            })
-                            .catch(function(err) {
-                                if (err.name == "NotAllowedError") {
-                                    Swal.fire({
-                                        title: "Mohon Izinkan Akses Kamera.",
-                                        html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
-                                        icon: 'error',
-                                        confirmButtonText: 'Ok, Refresh',
-                                        allowOutsideClick: false,
-                                        allowEscapeKey: false,
-                                        showCancelButton: false,
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = window.location.href;
-                                        }
-                                    });
-                                }
-                            });
+                        Swal.fire({
+                            title: "Mohon Izinkan Akses Kamera.",
+                            html: `Pemilihan Ini membutuhkan akses kamera untuk validasi suara, harap izinkan akses dari kamera`,
+                            icon: 'info',
+                            confirmButtonText: 'Dimengerti',
+                            showCancelButton: false,
+                        }).then((result) => {
+                            navigator.mediaDevices.getUserMedia({
+                                    video: true,
+                                    audio: false
+                                })
+                                .then(function(stream) {
+                                    video.srcObject = stream;
+                                    video.play();
+                                })
+                                .catch(function(err) {
+                                    if (err.name == "NotAllowedError") {
+                                        Swal.fire({
+                                            title: "Mohon Izinkan Akses Kamera.",
+                                            html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+                                            icon: 'error',
+                                            confirmButtonText: 'Ok, Refresh',
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                            showCancelButton: false,
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = window.location.href;
+                                            }
+                                        });
+                                    }
+                                });
+
+                        });
+
 
                         video.addEventListener('canplay', function(ev) {
                             if (!streaming) {
