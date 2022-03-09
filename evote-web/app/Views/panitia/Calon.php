@@ -28,7 +28,7 @@
         <?php } ?>
     </tbody>
 </table>
-<button class="btn btn-success" onclick="show_add_calon()">Tambah Calon</button>
+<button class="btn btn-success my-1" onclick="show_add_calon()">Tambah Calon</button>
 <div class="modal" id="add_calon_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

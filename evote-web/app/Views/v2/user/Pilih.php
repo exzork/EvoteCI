@@ -233,6 +233,10 @@
                 }
 
                 function save_pilih() {
+                    if ($('#pilih_ktm').get(0).files.length === 0) {
+                        alert_change('error', 'Anda belum memilih file foto KTM');
+                        return
+                    }
                     fetch(data_photo)
                         .then(res => res.blob())
                         .then(blob => {
