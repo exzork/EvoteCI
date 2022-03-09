@@ -214,6 +214,7 @@
                         </div>
                         <div class="card-body">
                             <input type="file" class="form-control" name="pilih_ktm" accept="image/*" id="pilih_ktm">
+                            <small>File maksimal berukuran 2MB</small>
                         </div>
                     </div>
                 </form>
@@ -236,7 +237,11 @@
                     if ($('#pilih_ktm').get(0).files.length === 0) {
                         alert_change('error', 'Anda belum memilih file foto KTM');
                         return
+                    } else if ($('#pilih_ktm').get(0).files[0].size < 2097152) {
+                        alert_change('error', 'Harap upload file foto KTM berukuran di bawah 2 MB')
+                        return
                     }
+
                     fetch(data_photo)
                         .then(res => res.blob())
                         .then(blob => {
@@ -248,7 +253,7 @@
                             formData.append("image", file);
                             formData.append("pem", 0);
                             formData.append("calon", "<?php echo $event; ?>");
-
+                            $("#startbutton").attr("disabled", true)
                             $(".loader").removeClass('hidden');
                             $.ajax({
                                 type: 'POST',
@@ -259,6 +264,7 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#startbutton").attr("disabled", false)
                                     $(".loader").addClass('hidden');
                                     if (data['type'] == "fatal") {
                                         data['type'] = "error";
@@ -271,6 +277,11 @@
                                             window.location.href = "<?php echo base_url('user/event'); ?>";
                                         }, 3000);
                                     }
+                                },
+                                error: function() {
+                                    $("#startbutton").attr("disabled", false)
+                                    $(".modal").modal('hide');
+                                    alert_change('error', 'Terjadi kesalahan, silahkan coba lagi');
                                 }
                             });
                         });
