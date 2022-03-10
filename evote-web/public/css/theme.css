@@ -313,6 +313,8 @@ a {
 }
 .img-event {
   max-width: 300px;
+  max-height: 300px;
+  margin: 10px 0;
 }
 .desc_lomba {
   font-size: 16px;
@@ -346,7 +348,7 @@ a {
   margin-right: 10px;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 769px) {
   .img-event {
     max-width: 200px;
   }
@@ -360,9 +362,9 @@ a {
     height: 100% !important;
   }
   .img-event {
-    max-width: 100%;
+    max-width: 150px;
   }
   .desc_lomba {
-    font-size: 12px;
+    font-size: 12pt;
   }
 }
