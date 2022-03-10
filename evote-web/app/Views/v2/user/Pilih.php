@@ -183,8 +183,8 @@
                                 <h3><b>Foto Diri</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto diri dengan memegang KTM bagi angkatan 2016-2019<br>
-                                    - Foto Selfie saja bagi angkatan 2020<br>
+                                    - Foto diri dengan memegang KTM bagi angkatan 2018-2020<br>
+                                    - Foto Selfie saja bagi angkatan 2021<br>
                                     - Foto diri dengan memegang Transkrip bagi yang KTMnya hilang
                                 </b>
                             </div>
@@ -206,14 +206,15 @@
                                 <h3><b>File Foto KTM</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto KTM (Bagi angkatan 2016 - 2019)<br>
-                                    - Screenshot Transkrip (Bagi angkatan 2020)<br>
+                                    - Foto KTM (Bagi angkatan 2018 - 2020)<br>
+                                    - Screenshot Transkrip (Bagi angkatan 2021)<br>
                                     - Screenshot Transkrip (Bagi yang KTMnya hilang)
                                 </b>
                             </div>
                         </div>
                         <div class="card-body">
                             <input type="file" class="form-control" name="pilih_ktm" accept="image/*" id="pilih_ktm">
+                            <small>File maksimal berukuran 2MB</small>
                         </div>
                     </div>
                 </form>
@@ -233,6 +234,14 @@
                 }
 
                 function save_pilih() {
+                    if ($('#pilih_ktm').get(0).files.length === 0) {
+                        alert_change('error', 'Anda belum memilih file foto KTM');
+                        return
+                    } else if ($('#pilih_ktm').get(0).files[0].size > 2097152) {
+                        alert_change('error', 'Harap upload file foto KTM berukuran di bawah 2 MB')
+                        return
+                    }
+
                     fetch(data_photo)
                         .then(res => res.blob())
                         .then(blob => {
@@ -244,7 +253,8 @@
                             formData.append("image", file);
                             formData.append("pem", 0);
                             formData.append("calon", "<?php echo $event; ?>");
-
+                            $("#startbutton").attr("disabled", true)
+                            $("#submit_btn").attr("disabled", true)
                             $(".loader").removeClass('hidden');
                             $.ajax({
                                 type: 'POST',
@@ -255,6 +265,8 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#submit_btn").removeAttr('disabled')
+                                    $("#startbutton").attr("disabled", false)
                                     $(".loader").addClass('hidden');
                                     if (data['type'] == "fatal") {
                                         data['type'] = "error";
@@ -267,6 +279,13 @@
                                             window.location.href = "<?php echo base_url('user/event'); ?>";
                                         }, 3000);
                                     }
+                                },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $("#submit_btn").removeAttr('disabled')
+                                    $("#startbutton").attr("disabled", false)
+                                    $(".modal").modal('hide');
+                                    alert_change('error', 'Terjadi kesalahan, silahkan coba lagi');
                                 }
                             });
                         });
@@ -286,31 +305,73 @@
                         canvas = document.getElementById('canvas');
                         photo = document.getElementById('photo');
                         startbutton = document.getElementById('startbutton');
-                        navigator.mediaDevices.getUserMedia({
-                                video: true,
-                                audio: false
-                            })
-                            .then(function(stream) {
-                                video.srcObject = stream;
-                                video.play();
-                            })
-                            .catch(function(err) {
-                                if (err.name == "NotAllowedError") {
-                                    Swal.fire({
-                                        title: "Mohon Izinkan Akses Kamera.",
-                                        html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
-                                        icon: 'error',
-                                        confirmButtonText: 'Ok, Refresh',
-                                        allowOutsideClick: false,
-                                        allowEscapeKey: false,
-                                        showCancelButton: false,
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = window.location.href;
+                        if (localStorage.getItem("cameraAccess") != "permit") {
+                            localStorage.setItem("cameraAccess", "permit");
+                            Swal.fire({
+                                title: "Mohon Izinkan Akses Kamera.",
+                                html: `Pemilihan Ini membutuhkan akses kamera untuk validasi suara, harap izinkan akses dari kamera`,
+                                icon: 'info',
+                                confirmButtonText: 'Dimengerti',
+                                showCancelButton: false,
+                            }).then((result) => {
+                                navigator.mediaDevices.getUserMedia({
+                                        video: true,
+                                        audio: false
+                                    })
+                                    .then(function(stream) {
+                                        video.srcObject = stream;
+                                        video.play();
+                                    })
+                                    .catch(function(err) {
+                                        localStorage.removeItem("cameraAccess");
+                                        if (err.name == "NotAllowedError") {
+                                            Swal.fire({
+                                                title: "Mohon Izinkan Akses Kamera.",
+                                                html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+                                                icon: 'error',
+                                                confirmButtonText: 'Ok, Refresh',
+                                                allowOutsideClick: false,
+                                                allowEscapeKey: false,
+                                                showCancelButton: false,
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = window.location.href;
+                                                }
+                                            });
                                         }
                                     });
-                                }
+
                             });
+                        } else {
+                            navigator.mediaDevices.getUserMedia({
+                                    video: true,
+                                    audio: false
+                                })
+                                .then(function(stream) {
+                                    video.srcObject = stream;
+                                    video.play();
+                                })
+                                .catch(function(err) {
+                                    localStorage.removeItem("cameraAccess");
+                                    if (err.name == "NotAllowedError") {
+                                        Swal.fire({
+                                            title: "Mohon Izinkan Akses Kamera.",
+                                            html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+                                            icon: 'error',
+                                            confirmButtonText: 'Ok, Refresh',
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                            showCancelButton: false,
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = window.location.href;
+                                            }
+                                        });
+                                    }
+                                });
+                        }
+
+
 
                         video.addEventListener('canplay', function(ev) {
                             if (!streaming) {

@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <meta name="description" content="Pemilihan Kahima, Wakahima, dan BLJ Informatika UPN Veteran Jawa Timur">
     <!-- Fav Icon  -->
     <link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
     <!-- Page Title  -->
     <title>Login | E-Vote</title>
     <!-- StyleSheets  -->
-    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.0'); ?>">
-    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.1'); ?>">
+    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.1'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
 </head>
 
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <div class="alert alert-fill alert-primary alert-icon alert-main mt-1" style="background-color:#ffd150">
-                            <em class="icon ni ni-alert-circle"></em> <strong>Pemberitahuan!</strong><br> Yang belum mendaftar akun evote per tanggal 28 Februari 2021 pukul 22.00 WIB, silakan cek email UPN masing-masing (jika tidak ada coba cek di <b>SPAM</b>) untuk melihat password evote nya. Bila terkendala saat login bisa menghubungi CP: 081233806275, Jika tidak menerima email klik <br><button onclick="$('#resendEmailModal').modal('show');" class="btn btn-success mt-1">Disini</button>
+                            <em class="icon ni ni-alert-circle"></em> <strong>Pemberitahuan!</strong><br> Yang belum mendaftar akun Pemira IF 2022 per tanggal 19 Maret 2022 pukul 15.00 WIB, silakan cek email UPN masing-masing (jika tidak ada coba cek di <b>SPAM</b>) untuk melihat password Pemira IF 2022 nya. Bila terkendala saat login bisa menghubungi CP: <a href="https://wa.me/0881026653711">0881026653711</a>, Jika tidak menerima email klik <br><button onclick="$('#resendEmailModal').modal('show');" class="btn btn-success mt-1">Disini</button>
                         </div>
                     </div>
 
