@@ -191,10 +191,8 @@
                         </div>
                         <div class="card-body">
                             <div class="camera">
-                                <img class="img-fluid" src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" />
-                                <img style="display: none;" id="fake1" invisi class="img-fluid" src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" />
-                                <video style="display: none;" id="video" class="img-fluid">Video stream not available.</video>
-                                <canvas style="display: none;" id="canvas" class="img-fluid"></canvas>
+                                <video id="video" class="img-fluid">Video stream not available.</video>
+                                <canvas id="canvas" class="img-fluid"></canvas>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -311,7 +309,7 @@
                             localStorage.setItem("cameraAccess", "permit");
                             Swal.fire({
                                 title: "Mohon Izinkan Akses Kamera.",
-                                html: `Pemilihan Ini membutuhkan akses kamera untuk validasi suara, harap izinkan akses dari kamera`,
+                                html: `Pemilihan Ini membutuhkan akses kamera untuk validasi suara, harap izinkan akses dari kamera. Dan juga harap tutup dulu aplikasi yang sedang berjalan di overlay seperti Google Meet ataupun Aplikasi Recording`,
                                 icon: 'info',
                                 confirmButtonText: 'Dimengerti',
                                 showCancelButton: false,
@@ -392,7 +390,6 @@
 
                         startbutton.addEventListener('click', function(ev) {
                             takepicture();
-                            $("#fake1").show()
                             ev.preventDefault();
                         }, false);
 

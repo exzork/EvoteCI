@@ -98,7 +98,7 @@ class User extends Controller
             $email->setFrom($main_email, "Admin Evote IF");
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Temporary Password');
-            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2022'>@pemiraif2022</a></p>";
+            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2022, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2022'>@pemiraif2022</a></p>";
             $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
@@ -155,9 +155,9 @@ class User extends Controller
                 $data = $tokenModel->where('token', $token)->first();
                 if ($data) {
                     $user = new UserModel();
-                    $user_data = $user->where('email_user', $data['email'])->first();
+                    // $user_data = $user->where('email_user', $data['email'])->first();
                     // Ubah passowrd
-                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->update();
+                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->where('email_user', $data['email'])->update();
                     // Hapus token
                     $tokenModel->where('token', $token)->delete();
                     $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
