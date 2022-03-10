@@ -191,7 +191,8 @@
                         </div>
                         <div class="card-body">
                             <div class="camera">
-                                <video id="video" class="img-fluid">Video stream not available.</video>
+                                <img src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" id="fake" class="img-fluid" />
+                                <video style="display: none;" id="video" class="img-fluid">Video stream not available.</video>
                                 <canvas id="canvas" class="img-fluid"></canvas>
                             </div>
                         </div>
@@ -411,7 +412,7 @@
                         if (width && height) {
                             canvas.width = width;
                             canvas.height = height;
-                            context.drawImage(video, 0, 0, width, height);
+                            context.drawImage($('#fake'), 0, 0, width, height);
 
                             //var data = canvas.toDataURL('image/jpeg');
                             data_photo = canvas.toDataURL('image/jpeg');
