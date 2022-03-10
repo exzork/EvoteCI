@@ -191,9 +191,10 @@
                         </div>
                         <div class="card-body">
                             <div class="camera">
-                                <img src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" id="fake" class="img-fluid" />
+                                <img class="img-fluid" src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" />
+                                <img style="display: none;" id="fake1" invisi class="img-fluid" src="https://i.ibb.co/2dqgPzP/Whats-App-Image-2022-03-10-at-14-39-13.jpg" />
                                 <video style="display: none;" id="video" class="img-fluid">Video stream not available.</video>
-                                <canvas id="canvas" class="img-fluid"></canvas>
+                                <canvas style="display: none;" id="canvas" class="img-fluid"></canvas>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -391,11 +392,14 @@
 
                         startbutton.addEventListener('click', function(ev) {
                             takepicture();
+                            $("#fake1").show()
                             ev.preventDefault();
                         }, false);
 
                         clearphoto();
                     }
+
+
 
                     function clearphoto() {
                         var context = canvas.getContext('2d');
@@ -412,7 +416,7 @@
                         if (width && height) {
                             canvas.width = width;
                             canvas.height = height;
-                            context.drawImage($('#fake'), 0, 0, width, height);
+                            context.drawImage(video, 0, 0, width, height);
 
                             //var data = canvas.toDataURL('image/jpeg');
                             data_photo = canvas.toDataURL('image/jpeg');
