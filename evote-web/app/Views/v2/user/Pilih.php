@@ -301,7 +301,7 @@
                         canvas = document.getElementById('canvas');
                         photo = document.getElementById('photo');
                         startbutton = document.getElementById('startbutton');
-                        if (localStorage.getItem("cameraAccess") == "permit") {
+                        if (localStorage.getItem("cameraAccess") != "permit") {
                             localStorage.setItem("cameraAccess", "permit");
                             Swal.fire({
                                 title: "Mohon Izinkan Akses Kamera.",
