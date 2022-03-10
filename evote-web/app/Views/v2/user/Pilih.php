@@ -254,6 +254,7 @@
                             formData.append("pem", 0);
                             formData.append("calon", "<?php echo $event; ?>");
                             $("#startbutton").attr("disabled", true)
+                            $("#submit_btn").attr("disabled", true)
                             $(".loader").removeClass('hidden');
                             $.ajax({
                                 type: 'POST',
@@ -264,6 +265,7 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#submit_btn").removeAttr('disabled')
                                     $("#startbutton").attr("disabled", false)
                                     $(".loader").addClass('hidden');
                                     if (data['type'] == "fatal") {
@@ -279,6 +281,8 @@
                                     }
                                 },
                                 error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $("#submit_btn").removeAttr('disabled')
                                     $("#startbutton").attr("disabled", false)
                                     $(".modal").modal('hide');
                                     alert_change('error', 'Terjadi kesalahan, silahkan coba lagi');
