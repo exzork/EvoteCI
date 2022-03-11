@@ -3,7 +3,7 @@
         $("#card_bukti").fadeIn();
     </script>
 <?php else : ?>
-    <div class="container-fluid" id="content">
+    <div class="container-fluid" id="">
         <div class="card ">
             <div class="card-header nav-main text-white">
                 <div class="card-title w-100">
