@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="card-body container-fluid bg-main">
-                <div class="row mt-3">
+                <div class="row justify-content-center mt-3">
                     <?php foreach ($data_calon as $key => $calon) : ?>
                         <div class="col-md-3 col-12 col-sm-4 mt-2">
                             <div class="card h-100">
