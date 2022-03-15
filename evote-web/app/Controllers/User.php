@@ -105,9 +105,9 @@ class User extends Controller
                 $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<br><a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled mt-1'>Kirim Ulang (01:00)</a>");
                 return redirect()->to(base_url('user'));
             } else {
-                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
-                echo $email->printDebugger();
-                #return redirect()->to(base_url('user'));
+                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi beberapa saat lagi.");
+                // echo $email->printDebugger();
+                return redirect()->to(base_url('user'));
             }
         } else {
             $data['validation'] = $this->validator;

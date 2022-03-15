@@ -201,6 +201,9 @@
     <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
     <script>
         $(document).ready(function() {
+            $('form').submit(function() {
+                $(this).find("button").attr('disabled', true);
+            });
             var $videoSrc = "<?= $youtube ?>";
             $("#video").addClass("d-none")
             $(".show-youtube").on("click", function(e) {
