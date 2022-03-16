@@ -452,10 +452,12 @@ class Panitia extends Controller
             ];
             $email = \Config\Services::email();
             $email->setTo($email_to);
-            $email->setFrom("admin@evote-if.xyz", "Admin Evote IF");
-            $email->setReplyTo("admin@evote-if.xyz", "Admin Evote IF");
-            $email->setSubject('PEMIRA INFORMATIKA 2022');
-            $email_str = '<p>PEMIRA INFORMATIKA 2022 sudah semakin dekat, pastikan suara anda digunakan sebaik mungkin pada pemilihannya yang dilaksanakan pada tanggal 19 Maret 2022 pukul 08.00 - 15.00 WIB yang dilakukan secara online di website <a href="https://pemiraifupn.com" target="_blank" rel="noopener">pemiraifupn.com</a> .</p><p>Bagi yang belum mendaftar per tanggal 28 Februari 2021 pukul 22.00 WIB.</p><p>Berikut password yang digunakan untuk login : ' . $onetime_pass . '</p><p>Silakan login di <a href="https://evoteif.xyz" target="_blank" rel="noopener">evoteif.xyz</a>&nbsp; untuk melakukan pemilihan menggunakan NPM masing-masing dan password diatas</p><p>Untuk Info lebih lanjut mengenai cara memilih dan para calon silakan cek IG PEMIRA INFORMATIKA <a href="https://www.instagram.com/pemiraif2022/">@pemiraif2022</a> dan channel youtube <a href="https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA" target="_blank" rel="noopener">PEMIRA INFORMATIKA</a> (https://www.youtube.com/channel/UCsyT1maVLJouLYiuhBV66UA)</p><p>jika ada kendala saat akses website silakan hubungi :<br />- CP Yanuar <br />Wa: 081233806275<br />Line: fitroni123</p><p>- CP Daffa <br />Wa: 087815584752<br />Line: ardidafa21</p>';
+
+            $main_email = getenv("EMAIL_SENDER");
+            $email->setFrom($main_email, "Admin Evote IF");
+            $email->setReplyTo($main_email, "Admin Evote IF");
+            $email->setSubject('PEMIRA FIK dan Informatika 2022');
+            $email_str = '<p>PEMIRA FIK dan INFORMATIKA 2022 sudah semakin dekat, pastikan suara anda digunakan sebaik mungkin pada pemilihannya yang dilaksanakan pada tanggal 19 Maret 2022 pukul 08.00 - 15.00 WIB yang dilakukan secara online di website <a href="https://pemiraifupn.com" target="_blank" rel="noopener">pemiraifupn.com</a> .</p><p>Bagi yang belum mendaftar per tanggal 28 Februari 2021 pukul 22.00 WIB.</p><p>Berikut password yang digunakan untuk login : ' . $onetime_pass . '</p><p>Silakan login di <a href="https://pemiraifupn.com" target="_blank" rel="noopener">pemiraifupn.com</a>&nbsp; untuk melakukan pemilihan menggunakan NPM masing-masing dan password diatas</p><p>Untuk Info lebih lanjut mengenai cara memilih dan para calon silakan cek IG PEMIRA INFORMATIKA <a href="https://www.instagram.com/pemiraif2022/">@pemiraif2022</a> dan  IG PEMIRA FASILKOM <a href="https://www.instagram.com/kpumfasilkom/">@kpumfasilkom</a></p><p>jika ada kendala saat akses website silakan hubungi :<br/>- CP Novandi <br/>Wa: 0881026653711<br/></p>';
             $email->setMessage($email_str);
             if ($email->send()) {
                 if ($user->save($data)) {
