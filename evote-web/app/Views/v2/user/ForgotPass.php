@@ -34,8 +34,8 @@
 
                             <div class="nk-header-brand ">
                                 <a href="<?= base_url("user/event") ?>" class="logo-link">
-                                    <img style="max-width:80px" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?>" alt="logo-dark">
-                                    <img style="max-width:80px" src="<?= base_url("img/pemiraff.png") ?>" srcset="<?= base_url("img/pemiraff.png") ?>" alt="logo-dark">
+                                    <img class="logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?>" alt="logo-dark">
+                                    <img class="logo-img" src="<?= base_url("img/pemiraff.png") ?>" srcset="<?= base_url("img/pemiraff.png") ?>" alt="logo-dark">
                                 </a>
                             </div><!-- .nk-header-brand -->
 
