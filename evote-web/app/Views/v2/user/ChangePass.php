@@ -32,8 +32,8 @@
 
                             <div class="nk-header-brand ">
                                 <a href="<?= base_url("user/event") ?>" class="logo-link">
-                                    <img class="logo-light logo-img" src="<?= base_url("img/logox.png") ?>" srcset="<?= base_url("img/logox.png") ?> 2x" alt="logo">
-                                    <img class="logo-dark logo-img" src="<?= base_url("img/logox.png") ?>" srcset="<?= base_url("img/logox.png") ?> 2x" alt="logo-dark">
+                                    <img class="logo-light logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?> 2x" alt="logo">
+                                    <img class="logo-dark logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?> 2x" alt="logo-dark">
                                 </a>
                             </div><!-- .nk-header-brand -->
 

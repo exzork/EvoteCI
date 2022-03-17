@@ -34,7 +34,7 @@
 
                             <div class="nk-header-brand ">
                                 <a href="<?= base_url("user/event") ?>" class="logo-link">
-                                    <img class="logo-img" src="<?= base_url("img/logox.png") ?>" srcset="<?= base_url("img/logox.png") ?>" alt="logo-dark">
+                                    <img class="logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?>" alt="logo-dark">
                                 </a>
                             </div><!-- .nk-header-brand -->
 
