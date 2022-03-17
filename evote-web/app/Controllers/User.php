@@ -81,7 +81,7 @@ class User extends Controller
                 $name_check = $this->request->getVar('nama'); #str_replace($single_quote,"",$this->request->getVar('nama'));
                 $response = explode(',', $mhs_upn);
                 if (strtolower($response[0]) != strtolower($name_check) . "(" . $this->request->getVar('npm') . ")") {
-                    $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/" . $this->request->getVar('npm') . "'>disini</a>");
+                    $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-mahasiswapemira.herokuapp.com/mahasiswa/" . $this->request->getVar('npm') . "'>disini</a>");
                     return redirect()->to(base_url('user'));
                 }
             } else {
