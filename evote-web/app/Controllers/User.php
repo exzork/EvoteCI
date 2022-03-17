@@ -522,6 +522,7 @@ class User extends Controller
         $data = [
             'event_data' => $events
         ];
+        $data['youtube'] =  getenv("ID_YOUTUBE");
         echo view($this->theme . '/user/Event', $data);
     }
 

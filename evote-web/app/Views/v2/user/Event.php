@@ -139,6 +139,7 @@
                                                     <div class="card-body d-flex flex-column text-center">
                                                         <div class="card-text">Video Cara Memilih</div>
                                                         <div>TBA</div>
+                                                        <iframe class="embed-responsive-item mt-1" src="https://www.youtube.com/watch?v=<?= $youtube ?>" id="video" allowscriptaccess="always" allow="autoplay"></iframe>
                                                     </div>
                                                 </div>
                                             </div>
