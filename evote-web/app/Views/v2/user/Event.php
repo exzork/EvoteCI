@@ -104,7 +104,7 @@
                                                 <div class="card mx-1 mt-1">
                                                     <div class="card-inner card-inner-lg ">
                                                         <article class="entry ">
-                                                            <h4 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h4>
+                                                            <h5 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h5>
                                                             <div class="w-100 text-center">
                                                                 <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
                                                             </div>
