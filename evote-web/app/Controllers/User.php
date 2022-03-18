@@ -78,7 +78,7 @@ class User extends Controller
                     return redirect()->to(base_url('user'));
                 }
                 //$single_quote = ["'",'"','`',"-",". ","."];
-                $name_check = $this->request->getVar('nama'); #str_replace($single_quote,"",$this->request->getVar('nama'));
+                $name_check = trim($this->request->getVar('nama')); #str_replace($single_quote,"",$this->request->getVar('nama'));
                 $response = explode(',', $mhs_upn);
                 if (strtolower($response[0]) != strtolower($name_check) . "(" . $this->request->getVar('npm') . ")") {
                     $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='" . base_url("mahasiswa/" . $this->request->getVar('npm')) . "'>disini</a>");
@@ -122,7 +122,7 @@ class User extends Controller
             $user = new UserModel();
             $email_to = $this->request->getVar('npm') . "@student.upnjatim.ac.id";
             $data = [
-                'nama_user' => $this->request->getVar('nama'),
+                'nama_user' => trim($this->request->getVar('nama')),
                 'npm' => $this->request->getVar('npm'),
                 'email_user' => $email_to,
                 'password_user' => password_hash($onetime_pass, PASSWORD_DEFAULT),
