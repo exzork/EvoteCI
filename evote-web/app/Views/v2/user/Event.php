@@ -101,7 +101,7 @@
                                             <?php elseif (count($event_data) >= 3) : ?>
                                                 <div class="col-lg-4">
                                                 <?php endif ?>
-                                                <div class="card mx-1">
+                                                <div class="card mx-1 mt-1">
                                                     <div class="card-inner card-inner-xl ">
                                                         <article class="entry ">
                                                             <h3 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h3>
