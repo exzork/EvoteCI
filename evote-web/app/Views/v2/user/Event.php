@@ -96,82 +96,86 @@
                                     <div class="row justify-content-center">
                                     <?php endif ?>
                                     <?php foreach ($event_data as $key => $event) { ?>
-                                        <div class="col-lg-4">
-                                            <div class="card mx-1">
-                                                <div class="card-inner card-inner-xl ">
-                                                    <article class="entry ">
-                                                        <h3 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h3>
-                                                        <div class="w-100 text-center">
-                                                            <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
-                                                        </div>
-                                                        <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
-                                                        <?php
-                                                        $classBtn = "btn-main";
-                                                        $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
-                                                        if ($event['pilih'] == 1) {
-                                                            $classBtn = "btn-success";
-                                                            $linkPiih = "#";
-                                                        }
-                                                        switch ($event['status']) {
-                                                            case 1:
-                                                                echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block btn-pilihan' href='" . $linkPiih . "'>Pilih";
-                                                                echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
-                                                                echo "</a>";
-                                                                break;
-                                                            case 2:
-                                                                echo "<button class='btn btn-lg btn-main mt-auto btn-block btn-pilihan'>" . $event['waktu_mulai'] . "</button>";
-                                                                break;
-                                                            case 3:
-                                                                echo "<button class='btn btn-lg btn-success mt-auto btn-block btn-pilihan'>Pemilihan telah selesai</button>";
-                                                                break;
-                                                        }
-                                                        ?>
-                                                    </article>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                    <?php if (count($event_data) > 0) : ?>
-                                    </div>
-                                <?php endif ?>
-                                <?php if (count($event_data) == 0) : ?>
-                                    <div class="container">
-                                        <div class="h-100">
-                                            <div class="row">
-                                                <div class="w-100 card">
-                                                    <div class="card-header">
-                                                        <div class="title w-100 text-center">
-                                                            <h4>Tidak ada event.</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body d-flex flex-column text-center">
-                                                        <div class="card-text font-weight-bold">Video Cara Memilih</div>
-
-                                                        <iframe height="315" class="embed-responsive-item mt-1" src="https://www.youtube.com/embed/<?= $youtube ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+                                        <?php if (count($event_data) < 3) : ?>
+                                            <div class="col-lg-6">
+                                            <?php elseif (count($event_data) >= 3) : ?>
+                                                <div class="col-lg-4">
+                                                <?php endif ?>
+                                                <div class="card mx-1">
+                                                    <div class="card-inner card-inner-xl ">
+                                                        <article class="entry ">
+                                                            <h3 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h3>
+                                                            <div class="w-100 text-center">
+                                                                <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
+                                                            </div>
+                                                            <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
+                                                            <?php
+                                                            $classBtn = "btn-main";
+                                                            $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
+                                                            if ($event['pilih'] == 1) {
+                                                                $classBtn = "btn-success";
+                                                                $linkPiih = "#";
+                                                            }
+                                                            switch ($event['status']) {
+                                                                case 1:
+                                                                    echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block btn-pilihan' href='" . $linkPiih . "'>Pilih";
+                                                                    echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
+                                                                    echo "</a>";
+                                                                    break;
+                                                                case 2:
+                                                                    echo "<button class='btn btn-lg btn-main mt-auto btn-block btn-pilihan'>" . $event['waktu_mulai'] . "</button>";
+                                                                    break;
+                                                                case 3:
+                                                                    echo "<button class='btn btn-lg btn-success mt-auto btn-block btn-pilihan'>Pemilihan telah selesai</button>";
+                                                                    break;
+                                                            }
+                                                            ?>
+                                                        </article>
                                                     </div>
                                                 </div>
+                                                </div>
+                                            <?php } ?>
+                                            <?php if (count($event_data) > 0) : ?>
                                             </div>
-                                        </div>
+                                        <?php endif ?>
+                                        <?php if (count($event_data) == 0) : ?>
+                                            <div class="container">
+                                                <div class="h-100">
+                                                    <div class="row">
+                                                        <div class="w-100 card">
+                                                            <div class="card-header">
+                                                                <div class="title w-100 text-center">
+                                                                    <h4>Tidak ada event.</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body d-flex flex-column text-center">
+                                                                <div class="card-text font-weight-bold">Video Cara Memilih</div>
+
+                                                                <iframe height="315" class="embed-responsive-item mt-1" src="https://www.youtube.com/embed/<?= $youtube ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endif ?>
                                     </div>
-                                <?php endif ?>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- content @e -->
-                <!-- footer @s -->
+                    <!-- content @e -->
+                    <!-- footer @s -->
 
-                <!-- footer @e -->
+                    <!-- footer @e -->
+                </div>
+                <!-- wrap @e -->
             </div>
-            <!-- wrap @e -->
+            <!-- main @e -->
         </div>
-        <!-- main @e -->
-    </div>
-    <!-- app-root @e -->
-    <!-- JavaScript -->
-    <script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
-    <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
+        <!-- app-root @e -->
+        <!-- JavaScript -->
+        <script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
+        <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
 </body>
 
 </html>
