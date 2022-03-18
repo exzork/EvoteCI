@@ -13,7 +13,7 @@
     <title>E-Vote</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.1'); ?>">
-    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.3'); ?>">
+    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.4'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
 </head>
 
@@ -104,7 +104,7 @@
                                                 <div class="card mx-1 mt-1">
                                                     <div class="card-inner card-inner-xl ">
                                                         <article class="entry ">
-                                                            <h3 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h3>
+                                                            <h4 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h4>
                                                             <div class="w-100 text-center">
                                                                 <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
                                                             </div>
