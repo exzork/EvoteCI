@@ -25,7 +25,7 @@
             border: 0
         }
 
-        @media only screen and (max-width: 1024px) {
+        @media only screen and (max-width: 1025px) {
             .foto-calon {
                 height: 300px;
             }
@@ -51,7 +51,7 @@
     <div id="content">
         <?php if ($rekap == 0) : ?>
             <div class=" bg-main h-100 panel-pemilihan" id="content">
-                <div class="card ">
+                <div class="card " style="box-shadow: none;">
                     <div class="card-header nav-main text-white">
                         <div class="card-title w-100">
                             <h5 style="text-align: center;" id="judul_pem"><?php echo $judul_event . " - " . $judul_pem ?></h5>
