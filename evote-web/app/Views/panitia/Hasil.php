@@ -21,6 +21,13 @@
         </div>
     </div>
 </div>
+<style>
+    .foto-calon {
+        height: 500px;
+        object-fit: cover;
+        object-position: top;
+    }
+</style>
 <?php foreach ($data_pem as $key => $data_pemilihan) : ?>
     <div class="card w-100">
         <div class="card-header">
@@ -42,13 +49,13 @@
                 </tr>
                 <tr>
                     <td>Jumlah Suara Tidak Sah</td>
-                    <td>: <?php echo $jml_valid - $jml_sah+$jml_invalid; ?></td>
+                    <td>: <?php echo $jml_valid - $jml_sah + $jml_invalid; ?></td>
                 </tr>
             </table>
             <?php foreach ($data_pemilihan['data_calon'] as $key2 => $data_calon) : ?>
                 <div class="col-md-3 col-6 col-sm-6">
                     <div class="card h-100">
-                        <img class="card-img-top img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $data_calon['foto_calon']; ?>" alt="Card image" style="width:100%">
+                        <img class="foto-calon card-img-top img-fluid" src="https://lh3.googleusercontent.com/d/<?php echo $data_calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                         <div class="card-body d-flex flex-column">
                             <div class="mt-auto">
                                 <h6 class="card-title w-100" style="text-align: center;"><?php echo $data_calon['nama_ketua'] . "<br>" . $data_calon['nama_wakil']; ?></h6>
