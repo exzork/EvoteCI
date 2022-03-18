@@ -16,9 +16,25 @@
     <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
     <style>
         .foto-calon {
-            max-height: 500px;
+            height: 500px;
             object-fit: cover;
             object-position: top;
+        }
+
+        .panel-pemilihan {
+            border: 0
+        }
+
+        @media only screen and (max-width: 1024px) {
+            .foto-calon {
+                height: 300px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .foto-calon {
+                height: 500px;
+            }
         }
     </style>
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
@@ -42,9 +58,9 @@
                         </div>
                     </div>
                     <div class="card-body container-fluid bg-main">
-                        <div class="row justify-content-center mt-3">
+                        <div class="row justify-content-center mt-1">
                             <?php foreach ($data_calon as $key => $calon) : ?>
-                                <div class="col-md-3 col-12 col-sm-4 mt-2">
+                                <div class="col-lg-3 col-md-4 col-12 col-sm-4 mt-2">
                                     <div class="card h-100">
                                         <img class="card-img-top img-fluid foto-calon" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                                         <div class="card-body d-flex flex-column">
