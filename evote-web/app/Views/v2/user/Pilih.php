@@ -42,8 +42,8 @@
                                         <img class="card-img-top img-fluid" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                                         <div class="card-body d-flex flex-column">
                                             <div class="mt-auto">
-                                                <h5 class="card-title text-main font-weight-bold" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
-                                                                                                                                                if ($calon['nama_wakil']) echo "<br>"; ?></h5>
+                                                <h5 class="card-title text-main font-weight-bold mb-3" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
+                                                                                                                                                        if ($calon['nama_wakil']) echo "<br>"; ?></h5>
                                                 <br><br>
                                                 <button href="#" class="btn mb-2 btn-success mt-auto btn-block" onclick="pesan('<?php echo $calon['kode_calon']; ?>')">Visi Misi
                                                 </button>

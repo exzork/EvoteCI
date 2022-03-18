@@ -92,40 +92,48 @@
                     <div class="container-fluid">
                         <div class="nk-content-inner">
                             <div class="nk-content-body container">
-                                <?php foreach ($event_data as $key => $event) { ?>
-                                    <div class="card">
-                                        <div class="card-inner card-inner-xl ">
-                                            <article class="entry ">
-                                                <h3 class="text-main text-center"><?php echo $event['nama_event']; ?></h3>
-                                                <div class="w-100 text-center">
-                                                    <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
+                                <?php if (count($event_data) > 0) : ?>
+                                    <div class="row justify-content-center">
+                                    <?php endif ?>
+                                    <?php foreach ($event_data as $key => $event) { ?>
+                                        <div class="col-md-6">
+                                            <div class="card mx-1">
+                                                <div class="card-inner card-inner-xl ">
+                                                    <article class="entry ">
+                                                        <h3 class="text-main text-center"><?php echo $event['nama_event']; ?></h3>
+                                                        <div class="w-100 text-center">
+                                                            <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
+                                                        </div>
+                                                        <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
+                                                        <?php
+                                                        $classBtn = "btn-main";
+                                                        $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
+                                                        if ($event['pilih'] == 1) {
+                                                            $classBtn = "btn-success";
+                                                            $linkPiih = "#";
+                                                        }
+                                                        switch ($event['status']) {
+                                                            case 1:
+                                                                echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . $linkPiih . "'>Pilih";
+                                                                echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
+                                                                echo "</a>";
+                                                                break;
+                                                            case 2:
+                                                                echo "<button class='btn btn-lg btn-main mt-auto btn-block'>" . $event['waktu_mulai'] . "</button>";
+                                                                break;
+                                                            case 3:
+                                                                echo "<button class='btn btn-lg btn-success mt-auto btn-block'>Pemilihan telah selesai</button>";
+                                                                break;
+                                                        }
+                                                        ?>
+                                                    </article>
                                                 </div>
-                                                <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
-                                                <?php
-                                                $classBtn = "btn-main";
-                                                $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
-                                                if ($event['pilih'] == 1) {
-                                                    $classBtn = "btn-success";
-                                                    $linkPiih = "#";
-                                                }
-                                                switch ($event['status']) {
-                                                    case 1:
-                                                        echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . $linkPiih . "'>Pilih";
-                                                        echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
-                                                        echo "</a>";
-                                                        break;
-                                                    case 2:
-                                                        echo "<button class='btn btn-lg btn-main mt-auto btn-block'>" . $event['waktu_mulai'] . "</button>";
-                                                        break;
-                                                    case 3:
-                                                        echo "<button class='btn btn-lg btn-success mt-auto btn-block'>Pemilihan telah selesai</button>";
-                                                        break;
-                                                }
-                                                ?>
-                                            </article>
+                                            </div>
                                         </div>
+                                    <?php } ?>
+                                    <?php if (count($event_data) > 0) : ?>
                                     </div>
-                                <?php } ?>
+                                <?php endif ?>
                                 <?php if (count($event_data) == 0) : ?>
                                     <div class="container">
                                         <div class="h-100">
