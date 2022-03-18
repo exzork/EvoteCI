@@ -13,7 +13,7 @@
     <title>E-Vote</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.1'); ?>">
-    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.1'); ?>">
+    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.3'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
 </head>
 
@@ -96,11 +96,11 @@
                                     <div class="row justify-content-center">
                                     <?php endif ?>
                                     <?php foreach ($event_data as $key => $event) { ?>
-                                        <div class="col-md-6">
+                                        <div class="col-lg-4">
                                             <div class="card mx-1">
                                                 <div class="card-inner card-inner-xl ">
                                                     <article class="entry ">
-                                                        <h3 class="text-main text-center"><?php echo $event['nama_event']; ?></h3>
+                                                        <h3 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h3>
                                                         <div class="w-100 text-center">
                                                             <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
                                                         </div>
@@ -114,15 +114,15 @@
                                                         }
                                                         switch ($event['status']) {
                                                             case 1:
-                                                                echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . $linkPiih . "'>Pilih";
+                                                                echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block btn-pilihan' href='" . $linkPiih . "'>Pilih";
                                                                 echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
                                                                 echo "</a>";
                                                                 break;
                                                             case 2:
-                                                                echo "<button class='btn btn-lg btn-main mt-auto btn-block'>" . $event['waktu_mulai'] . "</button>";
+                                                                echo "<button class='btn btn-lg btn-main mt-auto btn-block btn-pilihan'>" . $event['waktu_mulai'] . "</button>";
                                                                 break;
                                                             case 3:
-                                                                echo "<button class='btn btn-lg btn-success mt-auto btn-block'>Pemilihan telah selesai</button>";
+                                                                echo "<button class='btn btn-lg btn-success mt-auto btn-block btn-pilihan'>Pemilihan telah selesai</button>";
                                                                 break;
                                                         }
                                                         ?>

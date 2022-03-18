@@ -364,7 +364,14 @@ a {
   .img-event {
     max-width: 150px;
   }
-  .desc_lomba {
+  .desc_lomba .text-main {
+    font-size: 10pt;
+  }
+  .text-main .title-event {
     font-size: 12pt;
+  }
+
+  .btn-pilihan {
+    font-size: 10pt;
   }
 }
