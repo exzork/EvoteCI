@@ -57,6 +57,7 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <p>Silahkan Mendaftar ulang dengan menggunakan data diatas, untuk lebih amanya silahkan copy paste</p>
                                     <a href="<?= base_url() ?>" class="btn btn-lg btn-main btn-block"><i class="icon ni ni-home mr-2"></i>Kembali ke halaman utama</a>
                                 </div>
 
