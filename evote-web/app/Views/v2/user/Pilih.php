@@ -326,6 +326,9 @@
 
                     function startup() {
                         video = document.getElementById('video');
+                        video.setAttribute('autoplay', '');
+                        video.setAttribute('muted', '');
+                        video.setAttribute('playsinline', '')
                         canvas = document.getElementById('canvas');
                         photo = document.getElementById('photo');
                         startbutton = document.getElementById('startbutton');
