@@ -1,3 +1,16 @@
+<style>
+    .foto-calon {
+        height: 500px;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 500px;
+        margin: 0 50px 50px;
+    }
+</style>
 <div class="card w-100">
     <div class="card-header">
         <div class="card-title w-100">
@@ -18,16 +31,14 @@
                     <td>: <?php echo $jml_dp - ($jml_valid + $jml_invalid); ?></td>
                 </tr>
             </table>
+            <div class="chart-container mt-5">
+                <canvas id="ChartAnalisis"></canvas>
+            </div>
+
         </div>
     </div>
 </div>
-<style>
-    .foto-calon {
-        height: 500px;
-        object-fit: cover;
-        object-position: top;
-    }
-</style>
+
 <?php foreach ($data_pem as $key => $data_pemilihan) : ?>
     <div class="card w-100">
         <div class="card-header">
@@ -48,8 +59,12 @@
                     <td>: <?php echo $jml_sah; ?></td>
                 </tr>
                 <tr>
-                    <td>Jumlah Suara Tidak Sah</td>
-                    <td>: <?php echo $jml_valid - $jml_sah + $jml_invalid; ?></td>
+                    <td>Jumlah Suara Tidak Valid</td>
+                    <td>: <?php echo $jml_invalid; ?></td>
+                </tr <tr>
+                <td>Jumlah Suara Tidak Memilih</td>
+                <td>: <?php echo $jml_valid
+                            - $jml_sah ?></td>
                 </tr>
             </table>
             <?php foreach ($data_pemilihan['data_calon'] as $key2 => $data_calon) : ?>
@@ -70,7 +85,7 @@
                                         <?php if ($jml_sah == 0) : ?>
                                             <td>: 0%</td>
                                         <?php else : ?>
-                                            <td>: <?php echo  round($data_calon['jumlah'] / $jml_sah * 100, 2); ?>%</td>
+                                            <td>: <?php echo  round($data_calon['jumlah'] / ($jml_valid) * 100, 2); ?>%</td>
                                         <?php endif ?>
                                     </tr>
                                 </table>
@@ -79,6 +94,94 @@
                     </div>
                 </div>
             <?php endforeach; ?>
+            <?php if (count($data_pemilihan['data_calon']) == 1) : ?>
+                <div class="col-md-3 col-6 col-sm-6">
+                    <div class="card h-100">
+                        <img class="foto-calon card-img-top img-fluid" src="https://disk.mediaindonesia.com/thumbs/600x400/news/2020/09/022ad3dd3856f483f1a13c101c833229.jpg" alt="Card image" style="width:100%">
+                        <div class="card-body d-flex flex-column">
+                            <div class="mt-auto">
+                                <h6 class="card-title w-100" style="text-align: center;">Kotak Kosong</h6>
+
+                                <table class="table">
+                                    <tr>
+                                        <td>Jumlah</td>
+                                        <td>: <?php echo $jml_valid
+                                                    - $jml_sah ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Persentase</td>
+                                        <?php if ($jml_sah == 0) : ?>
+                                            <td>: 0%</td>
+                                        <?php else : ?>
+                                            <td>: <?php echo  round(($jml_valid
+                                                        - $jml_sah)  / ($jml_valid) * 100, 2); ?>%</td>
+                                        <?php endif ?>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 <?php endforeach; ?>
+<script>
+    $(document).ready(() => {
+        var chartRekap, chartPie;
+
+        const getConfig = (data, type = "pie") => {
+            const config = {
+                type: type,
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: type === "pie" ? true : false,
+                        },
+                    },
+                },
+            };
+            return config;
+        };
+
+        const analisisChart = () => {
+            const dataRekap = {
+                header: ['Jumlah Pemilih yang menggunakan suaranya', 'Jumlah Pemilih yang tidak menggunakan suaranya'],
+                data: [<?php echo $jml_valid + $jml_invalid; ?>, <?php echo $jml_dp - ($jml_valid + $jml_invalid); ?>]
+            }
+            const data = {
+                labels: dataRekap.header,
+                datasets: [{
+                    label: dataRekap.header,
+                    backgroundColor: randomColor(dataRekap.header.length),
+                    borderColor: randomColor(dataRekap.header.length),
+                    data: dataRekap.data,
+                }, ],
+            };
+            chartRekap = new Chart($("#ChartAnalisis"), getConfig(data, "pie"));
+        }
+
+
+
+        const randomColor = (length) => {
+            let color = [];
+            for (let i = 0; i < length; i++) {
+                const colorTemp = `rgba(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`;
+
+                if (color.indexOf(colorTemp) === -1) {
+                    color.push(colorTemp);
+                } else {
+                    i--;
+                }
+            }
+            return color;
+        };
+
+
+
+        analisisChart()
+    })
+</script>
