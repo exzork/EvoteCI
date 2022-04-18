@@ -58,14 +58,21 @@
                     <td>Jumlah Suara Sah</td>
                     <td>: <?php echo $jml_sah; ?></td>
                 </tr>
-                <tr>
-                    <td>Jumlah Suara Tidak Valid</td>
-                    <td>: <?php echo $jml_invalid; ?></td>
-                </tr <tr>
-                <td>Jumlah Suara Tidak Memilih</td>
-                <td>: <?php echo $jml_valid
-                            - $jml_sah ?></td>
-                </tr>
+                <?php if (count($data_pemilihan['data_calon']) == 1) : ?>
+                    <tr>
+                        <td>Jumlah Suara Tidak Valid</td>
+                        <td>: <?php echo $jml_invalid; ?></td>
+                    </tr <tr>
+                    <td>Jumlah Suara Tidak Memilih</td>
+                    <td>: <?php echo $jml_valid - $jml_sah ?></td>
+                    </tr>
+                <?php else : ?>
+                    <tr>
+                        <td>Jumlah Suara Tidak Sah</td>
+                        <td>: <?php echo $jml_valid - $jml_sah + $jml_invalid; ?></td>
+                    </tr>
+                <?php endif; ?>
+
             </table>
             <?php foreach ($data_pemilihan['data_calon'] as $key2 => $data_calon) : ?>
                 <div class="col-md-3 col-6 col-sm-6">
@@ -85,7 +92,11 @@
                                         <?php if ($jml_sah == 0) : ?>
                                             <td>: 0%</td>
                                         <?php else : ?>
-                                            <td>: <?php echo  round($data_calon['jumlah'] / ($jml_valid) * 100, 2); ?>%</td>
+                                            <?php if (count($data_pemilihan['data_calon']) == 1) : ?>
+                                                <td>: <?php echo  round($data_calon['jumlah'] / ($jml_valid) * 100, 2); ?>%</td>
+                                            <?php else : ?>
+                                                <td>: <?php echo  round($data_calon['jumlah'] / $jml_sah * 100, 2); ?>%</td>
+                                            <?php endif ?>
                                         <?php endif ?>
                                     </tr>
                                 </table>
