@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <meta name="description" content="Pemilihan Kahima, Wakahima, dan BLJ Informatika UPN Veteran Jawa Timur">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
+    <link rel="shortcut icon" href="<?= base_url('img/logox.ico') ?>">
     <!-- Page Title  -->
     <title>E-Vote</title>
     <!-- StyleSheets  -->
-    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.0'); ?>">
-    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('css/dashlite.min.css?ver=2.4.1'); ?>">
+    <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.4'); ?>">
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
 </head>
 
@@ -34,8 +34,7 @@
 
                             <div class="nk-header-brand ">
                                 <a href="<?= base_url("user/event") ?>" class="logo-link">
-                                    <img class="logo-light logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo">
-                                    <img class="logo-dark logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo-dark">
+                                    <img class="logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?>" alt="">
                                 </a>
                             </div><!-- .nk-header-brand -->
 
@@ -93,76 +92,90 @@
                     <div class="container-fluid">
                         <div class="nk-content-inner">
                             <div class="nk-content-body container">
-                                <?php foreach ($event_data as $key => $event) { ?>
-                                    <div class="card">
-                                        <div class="card-inner card-inner-xl ">
-                                            <article class="entry ">
-                                                <h3 class="text-main text-center"><?php echo $event['nama_event']; ?></h3>
-                                                <div class="w-100 text-center">
-                                                    <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
-                                                </div>
-                                                <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
-                                                <?php
-                                                $classBtn = "btn-main";
-                                                $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
-                                                if ($event['pilih'] == 1) {
-                                                    $classBtn = "btn-success";
-                                                    $linkPiih = "#";
-                                                }
-                                                switch ($event['status']) {
-                                                    case 1:
-                                                        echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block' href='" . $linkPiih . "'>Pilih";
-                                                        echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
-                                                        echo "</a>";
-                                                        break;
-                                                    case 2:
-                                                        echo "<button class='btn btn-lg btn-main mt-auto btn-block'>" . $event['waktu_mulai'] . "</button>";
-                                                        break;
-                                                    case 3:
-                                                        echo "<button class='btn btn-lg btn-success mt-auto btn-block'>Pemilihan telah selesai</button>";
-                                                        break;
-                                                }
-                                                ?>
-                                            </article>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                                <?php if (count($event_data) == 0) : ?>
-                                    <div class="container">
-                                        <div class="h-100">
-                                            <div class="row">
-                                                <div class="w-100 card">
-                                                    <div class="card-header">
-                                                        <div class="title w-100 text-center">
-                                                            <h4>Tidak ada event.</h4>
-                                                        </div>
+                                <?php if (count($event_data) > 0) : ?>
+                                    <div class="row justify-content-center">
+                                    <?php endif ?>
+                                    <?php foreach ($event_data as $key => $event) { ?>
+                                        <?php if (count($event_data) < 3) : ?>
+                                            <div class="col-lg-6">
+                                            <?php elseif (count($event_data) >= 3) : ?>
+                                                <div class="col-lg-4">
+                                                <?php endif ?>
+                                                <div class="card mx-1 mt-1">
+                                                    <div class="card-inner card-inner-lg ">
+                                                        <article class="entry ">
+                                                            <h5 class="text-main title-event text-center"><?php echo $event['nama_event']; ?></h5>
+                                                            <div class="w-100 text-center">
+                                                                <img src="https://lh3.googleusercontent.com/d/<?php echo $event['foto_event']; ?>" class="img-event" alt="">
+                                                            </div>
+                                                            <div class="mt-0 desc_lomba text-main px-1"><?= $event['deskripsi']; ?></div>
+                                                            <?php
+                                                            $classBtn = "btn-main";
+                                                            $linkPiih = base_url("/user/pilih_v/" . $event['kode_event']);
+                                                            if ($event['pilih'] == 1) {
+                                                                $classBtn = "btn-success";
+                                                                $linkPiih = "#";
+                                                            }
+                                                            switch ($event['status']) {
+                                                                case 1:
+                                                                    echo "<a class='btn btn-lg " . $classBtn . " mt-auto btn-block btn-pilihan' href='" . $linkPiih . "'>Pilih";
+                                                                    echo $event['pilih'] == 1 ? "(Sudah Memilih)" : "";
+                                                                    echo "</a>";
+                                                                    break;
+                                                                case 2:
+                                                                    echo "<button class='btn btn-lg btn-main mt-auto btn-block btn-pilihan'>" . $event['waktu_mulai'] . "</button>";
+                                                                    break;
+                                                                case 3:
+                                                                    echo "<button class='btn btn-lg btn-success mt-auto btn-block btn-pilihan'>Pemilihan telah selesai</button>";
+                                                                    break;
+                                                            }
+                                                            ?>
+                                                        </article>
                                                     </div>
-                                                    <div class="card-body d-flex flex-column text-center">
-                                                        <div class="card-text">Video Cara Memilih</div>
-                                                        <div>TBA</div>
+                                                </div>
+                                                </div>
+                                            <?php } ?>
+                                            <?php if (count($event_data) > 0) : ?>
+                                            </div>
+                                        <?php endif ?>
+                                        <?php if (count($event_data) == 0) : ?>
+                                            <div class="container">
+                                                <div class="h-100">
+                                                    <div class="row">
+                                                        <div class="w-100 card">
+                                                            <div class="card-header">
+                                                                <div class="title w-100 text-center">
+                                                                    <h4>Tidak ada event.</h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body d-flex flex-column text-center">
+                                                                <div class="card-text font-weight-bold">Video Cara Memilih</div>
+
+                                                                <iframe height="315" class="embed-responsive-item mt-1" src="https://www.youtube.com/embed/<?= $youtube ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <?php endif ?>
                                     </div>
-                                <?php endif ?>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- content @e -->
-                <!-- footer @s -->
+                    <!-- content @e -->
+                    <!-- footer @s -->
 
-                <!-- footer @e -->
+                    <!-- footer @e -->
+                </div>
+                <!-- wrap @e -->
             </div>
-            <!-- wrap @e -->
+            <!-- main @e -->
         </div>
-        <!-- main @e -->
-    </div>
-    <!-- app-root @e -->
-    <!-- JavaScript -->
-    <script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
-    <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
+        <!-- app-root @e -->
+        <!-- JavaScript -->
+        <script src="<?= base_url('js/bundle.js?ver=2.4.0') ?>"></script>
+        <script src="<?= base_url('js/scripts.js?ver=2.4.0') ?>"></script>
 </body>
 
 </html>

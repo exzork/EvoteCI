@@ -3,7 +3,7 @@
         $("#card_bukti").fadeIn();
     </script>
 <?php else : ?>
-    <div class="container-fluid" id="content">
+    <div class="bg-main h-100 panel-pemilihan" id="content">
         <div class="card ">
             <div class="card-header nav-main text-white">
                 <div class="card-title w-100">
@@ -11,15 +11,15 @@
                 </div>
             </div>
             <div class="card-body container-fluid bg-main">
-                <div class="row mt-3">
+                <div class="row justify-content-center mt-1">
                     <?php foreach ($data_calon as $key => $calon) : ?>
                         <div class="col-md-3 col-12 col-sm-4 mt-2">
                             <div class="card h-100">
-                                <img class="card-img-top img-fluid" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
+                                <img class="card-img-top img-fluid foto-calon" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                                 <div class="card-body d-flex flex-column">
                                     <div class="mt-auto">
-                                        <h5 class="card-title text-main font-weight-bold" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
-                                                                                                                                        if ($calon['nama_wakil']) echo "<br>"; ?></h5>
+                                        <h5 class="card-title text-main font-weight-bold mb-3" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
+                                                                                                                                                if ($calon['nama_wakil']) echo "<br>"; ?></h5>
                                         <br><br>
                                         <button href="#" class="btn mb-2 btn-success mt-auto btn-block" onclick="pesan('<?php echo $calon['kode_calon']; ?>')">Visi Misi
                                         </button>

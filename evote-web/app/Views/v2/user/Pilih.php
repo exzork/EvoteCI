@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Pemilihan</title>
-    <link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
+    <link rel="shortcut icon" href="<?= base_url('img/logox.ico') ?>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="<?php echo base_url('css/all.min.css'); ?>">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -14,6 +15,29 @@
     <link rel="stylesheet" href="<?php echo base_url('css/adminlte.min.css'); ?>">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
     <link id="skin-default" rel="stylesheet" href="<?php echo base_url('css/theme.css?ver=2.4.0'); ?>">
+    <style>
+        .foto-calon {
+            height: 500px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .panel-pemilihan {
+            border: 0
+        }
+
+        @media only screen and (max-width: 1025px) {
+            .foto-calon {
+                height: 300px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .foto-calon {
+                height: 500px;
+            }
+        }
+    </style>
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
     <script src="<?php echo base_url('js/bootstrap.bundle.min.js'); ?>"></script>
     <script src="<?php echo base_url('js/moment.js'); ?>"></script>
@@ -28,22 +52,22 @@
     <div id="content">
         <?php if ($rekap == 0) : ?>
             <div class=" bg-main h-100 panel-pemilihan" id="content">
-                <div class="card ">
+                <div class="card " style="box-shadow: none;">
                     <div class="card-header nav-main text-white">
                         <div class="card-title w-100">
                             <h5 style="text-align: center;" id="judul_pem"><?php echo $judul_event . " - " . $judul_pem ?></h5>
                         </div>
                     </div>
                     <div class="card-body container-fluid bg-main">
-                        <div class="row mt-3">
+                        <div class="row justify-content-center mt-1">
                             <?php foreach ($data_calon as $key => $calon) : ?>
-                                <div class="col-md-3 col-12 col-sm-4 mt-2">
+                                <div class="col-lg-3 col-md-4 col-12 col-sm-4 mt-2">
                                     <div class="card h-100">
-                                        <img class="card-img-top img-fluid" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
+                                        <img class="card-img-top img-fluid foto-calon" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                                         <div class="card-body d-flex flex-column">
                                             <div class="mt-auto">
-                                                <h5 class="card-title text-main font-weight-bold" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
-                                                                                                                                                if ($calon['nama_wakil']) echo "<br>"; ?></h5>
+                                                <h5 class="card-title text-main font-weight-bold mb-3" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
+                                                                                                                                                        if ($calon['nama_wakil']) echo "<br>"; ?></h5>
                                                 <br><br>
                                                 <button href="#" class="btn mb-2 btn-success mt-auto btn-block" onclick="pesan('<?php echo $calon['kode_calon']; ?>')">Visi Misi
                                                 </button>
@@ -183,8 +207,8 @@
                                 <h3><b>Foto Diri</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto diri dengan memegang KTM bagi angkatan 2016-2019<br>
-                                    - Foto Selfie saja bagi angkatan 2020<br>
+                                    - Foto diri dengan memegang KTM bagi angkatan 2018-2020<br>
+                                    - Foto Selfie saja bagi angkatan 2021<br>
                                     - Foto diri dengan memegang Transkrip bagi yang KTMnya hilang
                                 </b>
                             </div>
@@ -206,14 +230,15 @@
                                 <h3><b>File Foto KTM</b></h3>
                             </div>
                             <div class="card-text"><b>
-                                    - Foto KTM (Bagi angkatan 2016 - 2019)<br>
-                                    - Screenshot Transkrip (Bagi angkatan 2020)<br>
+                                    - Foto KTM (Bagi angkatan 2018 - 2020)<br>
+                                    - Screenshot Transkrip (Bagi angkatan 2021)<br>
                                     - Screenshot Transkrip (Bagi yang KTMnya hilang)
                                 </b>
                             </div>
                         </div>
                         <div class="card-body">
                             <input type="file" class="form-control" name="pilih_ktm" accept="image/*" id="pilih_ktm">
+                            <small>File maksimal berukuran 2MB</small>
                         </div>
                     </div>
                 </form>
@@ -233,6 +258,14 @@
                 }
 
                 function save_pilih() {
+                    if ($('#pilih_ktm').get(0).files.length === 0) {
+                        alert_change('error', 'Anda belum memilih file foto KTM');
+                        return
+                    } else if ($('#pilih_ktm').get(0).files[0].size > 2097152) {
+                        alert_change('error', 'Harap upload file foto KTM berukuran di bawah 2 MB')
+                        return
+                    }
+
                     fetch(data_photo)
                         .then(res => res.blob())
                         .then(blob => {
@@ -244,7 +277,8 @@
                             formData.append("image", file);
                             formData.append("pem", 0);
                             formData.append("calon", "<?php echo $event; ?>");
-
+                            $("#startbutton").attr("disabled", true)
+                            $("#submit_btn").attr("disabled", true)
                             $(".loader").removeClass('hidden');
                             $.ajax({
                                 type: 'POST',
@@ -255,6 +289,8 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(data) {
+                                    $("#submit_btn").removeAttr('disabled')
+                                    $("#startbutton").attr("disabled", false)
                                     $(".loader").addClass('hidden');
                                     if (data['type'] == "fatal") {
                                         data['type'] = "error";
@@ -267,6 +303,13 @@
                                             window.location.href = "<?php echo base_url('user/event'); ?>";
                                         }, 3000);
                                     }
+                                },
+                                error: function() {
+                                    $(".loader").addClass('hidden');
+                                    $("#submit_btn").removeAttr('disabled')
+                                    $("#startbutton").attr("disabled", false)
+                                    $(".modal").modal('hide');
+                                    alert_change('error', 'Terjadi kesalahan, silahkan coba lagi');
                                 }
                             });
                         });
@@ -283,34 +326,79 @@
 
                     function startup() {
                         video = document.getElementById('video');
+                        video.setAttribute('autoplay', '');
+                        video.setAttribute('muted', '');
+                        video.setAttribute('playsinline', '')
                         canvas = document.getElementById('canvas');
                         photo = document.getElementById('photo');
                         startbutton = document.getElementById('startbutton');
-                        navigator.mediaDevices.getUserMedia({
-                                video: true,
-                                audio: false
-                            })
-                            .then(function(stream) {
-                                video.srcObject = stream;
-                                video.play();
-                            })
-                            .catch(function(err) {
-                                if (err.name == "NotAllowedError") {
-                                    Swal.fire({
-                                        title: "Mohon Izinkan Akses Kamera.",
-                                        html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
-                                        icon: 'error',
-                                        confirmButtonText: 'Ok, Refresh',
-                                        allowOutsideClick: false,
-                                        allowEscapeKey: false,
-                                        showCancelButton: false,
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = window.location.href;
+                        if (localStorage.getItem("cameraAccess") != "permit") {
+                            localStorage.setItem("cameraAccess", "permit");
+                            Swal.fire({
+                                title: "Mohon Izinkan Akses Kamera.",
+                                html: `Pemilihan Ini membutuhkan akses kamera untuk validasi suara, harap izinkan akses dari kamera. Dan juga harap tutup dulu aplikasi yang sedang berjalan di overlay seperti Google Meet ataupun Aplikasi Recording`,
+                                icon: 'info',
+                                confirmButtonText: 'Dimengerti',
+                                showCancelButton: false,
+                            }).then((result) => {
+                                navigator.mediaDevices.getUserMedia({
+                                        video: true,
+                                        audio: false
+                                    })
+                                    .then(function(stream) {
+                                        video.srcObject = stream;
+                                        video.play();
+                                    })
+                                    .catch(function(err) {
+                                        localStorage.removeItem("cameraAccess");
+                                        if (err.name == "NotAllowedError") {
+                                            Swal.fire({
+                                                title: "Mohon Izinkan Akses Kamera.",
+                                                html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+                                                icon: 'error',
+                                                confirmButtonText: 'Ok, Refresh',
+                                                allowOutsideClick: false,
+                                                allowEscapeKey: false,
+                                                showCancelButton: false,
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = window.location.href;
+                                                }
+                                            });
                                         }
                                     });
-                                }
+
                             });
+                        } else {
+                            navigator.mediaDevices.getUserMedia({
+                                    video: true,
+                                    audio: false
+                                })
+                                .then(function(stream) {
+                                    video.srcObject = stream;
+                                    video.play();
+                                })
+                                .catch(function(err) {
+                                    localStorage.removeItem("cameraAccess");
+                                    if (err.name == "NotAllowedError") {
+                                        Swal.fire({
+                                            title: "Mohon Izinkan Akses Kamera.",
+                                            html: `<iframe class="img-fluid" src="https://www.youtube-nocookie.com/embed/1PYIf5CCAKY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+                                            icon: 'error',
+                                            confirmButtonText: 'Ok, Refresh',
+                                            allowOutsideClick: false,
+                                            allowEscapeKey: false,
+                                            showCancelButton: false,
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = window.location.href;
+                                            }
+                                        });
+                                    }
+                                });
+                        }
+
+
 
                         video.addEventListener('canplay', function(ev) {
                             if (!streaming) {
@@ -334,6 +422,8 @@
 
                         clearphoto();
                     }
+
+
 
                     function clearphoto() {
                         var context = canvas.getContext('2d');

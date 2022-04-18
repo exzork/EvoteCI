@@ -2,13 +2,12 @@
 <html lang="zxx" class="js">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <meta name="description" content="Pemilihan Kahima, Wakahima, dan BLJ Informatika UPN Veteran Jawa Timur">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="<?= base_url('img/favicon.ico') ?>">
+    <link rel="shortcut icon" href="<?= base_url('img/logox.ico') ?>">
     <!-- Page Title  -->
     <title>Ganti Password</title>
     <!-- StyleSheets  -->
@@ -23,7 +22,6 @@
         <!-- main @s -->
         <div class="nk-main ">
             <!-- sidebar @s -->
-
             <!-- sidebar @e -->
             <!-- wrap @s -->
             <div class="nk-wrap ">
@@ -34,8 +32,8 @@
 
                             <div class="nk-header-brand ">
                                 <a href="<?= base_url("user/event") ?>" class="logo-link">
-                                    <img class="logo-light logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo">
-                                    <img class="logo-dark logo-img" src="<?= base_url("img/pemira22.png") ?>" srcset="<?= base_url("img/pemira22.png") ?> 2x" alt="logo-dark">
+                                    <img class="logo-light logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?> 2x" alt="logo">
+                                    <img class="logo-dark logo-img" src="<?= base_url("img/logox1.png") ?>" srcset="<?= base_url("img/logox1.png") ?> 2x" alt="logo-dark">
                                 </a>
                             </div><!-- .nk-header-brand -->
 

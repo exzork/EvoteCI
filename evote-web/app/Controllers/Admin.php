@@ -561,7 +561,7 @@ class Admin extends Controller
         $email->setFrom($main_email, "Admin Evote IF");
         $email->setReplyTo($main_email, "Admin Evote IF");
         $email->setSubject('Temporary Password');
-        $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
+        $email_str = "<br><p>Untuk berbagai informasi seputar Pemira 2022, silakan kunjungi & follow instagram kami untuk Pemira IF di : <a href='https://instagram.com/pemiraif2022'>@pemiraif2022</a> dan Pemira Fasilkom di : <a href='https://instagram.com/kpumfasilkom'>@kpumfasilkom</a></p>";
         $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
         if ($email->send()) {
             if ($user->save($data)) {

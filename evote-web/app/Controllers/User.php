@@ -75,18 +75,19 @@ class User extends Controller
                 return redirect()->to(base_url('user'));
             }
             //$single_quote = ["'",'"','`',"-",". ","."];
-            $name_check = $this->request->getVar('nama'); #str_replace($single_quote,"",$this->request->getVar('nama'));
+            $name_check = trim($this->request->getVar('nama')); #str_replace($single_quote,"",$this->request->getVar('nama'));
             $response = explode(',', $mhs_upn);
             if (strtolower($response[0]) != strtolower($name_check) . "(" . $this->request->getVar('npm') . ")") {
-                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti. Cek <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/" . $this->request->getVar('npm') . "'>disini</a>");
+                $session->setFlashdata('msg', "Pastikan NAMA dan NPM anda sesuai dengan data di dikti.Silahkan untuk mengecek pada link berikut dan gunakan nama tersebut saat pendaftaran <a target='_blank' href='https://api-frontend.kemdikbud.go.id/hit_mhs/" . $this->request->getVar('npm') . "'>disini</a>");
                 return redirect()->to(base_url('user'));
             }
+
             helper("text");
             $onetime_pass = random_string("alnum", 8);
             $user = new UserModel();
             $email_to = $this->request->getVar('npm') . "@student.upnjatim.ac.id";
             $data = [
-                'nama_user' => $this->request->getVar('nama'),
+                'nama_user' => trim($this->request->getVar('nama')),
                 'npm' => $this->request->getVar('npm'),
                 'email_user' => $email_to,
                 'password_user' => password_hash($onetime_pass, PASSWORD_DEFAULT),
@@ -98,16 +99,16 @@ class User extends Controller
             $email->setFrom($main_email, "Admin Evote IF");
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Temporary Password');
-            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira informatika 2021, silakan kunjungi & follow instagram kami di : <a href='https://instagram.com/pemiraif2021'>@pemiraif2021</a></p>";
+            $email_str = "<br><p>Untuk berbagai informasi seputar Pemira 2022, silakan kunjungi & follow instagram kami untuk Pemira IF di : <a href='https://instagram.com/pemiraif2022'>@pemiraif2022</a> dan Pemira Fasilkom di : <a href='https://instagram.com/kpumfasilkom'>@kpumfasilkom</a></p>";
             $email->setMessage("Ini adalah password sementara untuk akunmu : " . $onetime_pass . $email_str);
             if ($email->send()) {
                 $user->save($data);
                 $session->setFlashdata('msg', "Berhasil mengirim email, Cek password di email " . $email_to . "<br><a href='" . base_url('user/resend/') . "/" . $email_to . "' id='resend_email' class='btn btn-secondary disabled mt-1'>Kirim Ulang (01:00)</a>");
                 return redirect()->to(base_url('user'));
             } else {
-                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi nanti. ");
-                echo $email->printDebugger();
-                #return redirect()->to(base_url('user'));
+                $session->setFlashdata('msg', "Gagal Mengirim email. Silahkan coba lagi beberapa saat lagi.");
+                // echo $email->printDebugger();
+                return redirect()->to(base_url('user'));
             }
         } else {
             $data['validation'] = $this->validator;
@@ -155,9 +156,9 @@ class User extends Controller
                 $data = $tokenModel->where('token', $token)->first();
                 if ($data) {
                     $user = new UserModel();
-                    $user_data = $user->where('email_user', $data['email'])->first();
+                    // $user_data = $user->where('email_user', $data['email'])->first();
                     // Ubah passowrd
-                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->update();
+                    $user->set(['password_user' => password_hash($this->request->getVar('new_pass'), PASSWORD_DEFAULT)])->where('email_user', $data['email'])->update();
                     // Hapus token
                     $tokenModel->where('token', $token)->delete();
                     $session->setFlashdata('msg', "Berhasil mengubah password, silahkan login dengan password baru anda.");
@@ -274,7 +275,7 @@ class User extends Controller
             $email->setFrom($main_email, "Admin Evote IF");
             $email->setReplyTo($main_email, "Admin Evote IF");
             $email->setSubject('Lupa Password');
-            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Rubah Password</a>");
+            $email->setMessage("Ini adalah link untuk merubah password untuk akunmu : <a href='" . base_url('user/password/' . $token) . "'>Ubah Password</a>");
 
             if ($email->send()) {
                 $token_data = [
@@ -486,6 +487,7 @@ class User extends Controller
         $data = [
             'event_data' => $events
         ];
+        $data['youtube'] =  getenv("ID_YOUTUBE");
         echo view($this->theme . '/user/Event', $data);
     }
 
@@ -819,5 +821,11 @@ class User extends Controller
         $session = session();
         $session->destroy();
         return redirect()->to(base_url('user'));
+    }
+
+    public function detail_mahasiswa($npm)
+    {
+        $data['npm'] =  $npm;
+        return view($this->theme . '/user/DetailMahasiswa', $data);
     }
 }

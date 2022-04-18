@@ -34,6 +34,8 @@ $routes->setAutoRoute(true);
 
 $routes->get('/home', 'Home::index');
 
+$routes->get('/mahasiswa/(:num)', 'User::detail_mahasiswa/$1');
+
 $routes->get('user/event', 'User::event', ['filter' => 'authUser']);
 $routes->get('user', 'User::index', ['filter' => 'authUserLog']);
 //$routes->get('/');

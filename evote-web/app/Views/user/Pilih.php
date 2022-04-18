@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pemilihan</title>
-    <link rel="icon" href="<?php echo base_url('img/favicon.ico'); ?>">
+    <link rel="icon" href="<?php echo base_url('img/logox.ico'); ?>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="<?php echo base_url('css/all.min.css'); ?>">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="<?php echo base_url('css/bootstrap-datetimepicker.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('css/adminlte.min.css'); ?>">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+    <style>
+        .foto-calon {
+            max-height: 500px;
+            object-fit: cover;
+            object-position: top;
+        }
+    </style>
     <script src="<?php echo base_url('js/jquery.js'); ?>"></script>
     <script src="<?php echo base_url('js/bootstrap.bundle.min.js'); ?>"></script>
     <script src="<?php echo base_url('js/moment.js'); ?>"></script>
@@ -38,7 +45,7 @@
                             <?php foreach ($data_calon as $key => $calon) : ?>
                                 <div class="col-md-3 col-12 col-sm-4 mt-2">
                                     <div class="card h-100">
-                                        <img class="card-img-top img-fluid" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
+                                        <img class="card-img-top img-fluid foto-calon" id="img_<?php echo $calon['kode_calon']; ?>" src="https://lh3.googleusercontent.com/d/<?php echo $calon['foto_calon']; ?>" alt="Card image" style="width:100%">
                                         <div class="card-body d-flex flex-column">
                                             <div class="mt-auto">
                                                 <h5 class="card-title" id="nama_<?php echo $calon['kode_calon']; ?>"><?php echo $calon['nama_ketua'] . "<br>" . $calon['nama_wakil'];
